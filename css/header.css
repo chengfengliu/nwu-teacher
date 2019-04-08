@@ -1,0 +1,126 @@
+/* 当屏幕最小为669px时（一直大于669px），执行下面 PC端*/
+@media(min-width:669px) {
+  /* 头部 */
+  header {
+    height: 64px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 40px;
+    background-color: #fff;
+  }
+  header img#icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    margin-top: 2px;
+  }
+  header p{
+    font-size: 1.5em;
+    color: #000;
+    margin-top: 2px;
+    margin-bottom: 0px;
+    line-height: 60px;
+  }
+  header ul{
+    margin-top: 2px;
+    line-height: 60px;
+  }
+
+  header ul li{
+    color: #000;
+    float: right;
+    list-style-type: none;
+  }
+  header ul li a{
+    color: #000;
+    text-decoration: none;
+    margin-left: 10px;
+  }
+  header ul li a:hover {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  header button {
+    display: none;
+  }
+}
+/* 当屏幕最大为669px时（一直小于669px），执行下面 移动端*/
+@media(max-width:669px) {
+  /* 头部 */
+  header {
+    position: relative;
+    height: 50px;
+    background-color: #373277;
+  }
+  header img#icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    margin: 5px 0px 0px 0px;
+    display: none;
+  }
+  header p{
+    position: absolute;
+    margin-left: 10px;
+    color: #fff;
+  }
+  header ul{
+    position: absolute;
+    right: 10px;
+  }
+  header ul li{
+    float: right;
+    list-style-type: none;
+    margin-left: 10px;
+  }
+  header ul li a{
+    text-decoration: none;
+    color: rgba(255, 255, 255, .6);
+  }
+  header ul li a:hover {
+    color: #fff;
+  }
+  header ul#menu{
+    position: absolute;
+    right: 0;
+    display: block;
+    width: 100%;
+    background-color: #373277;
+    margin-top: 45px;
+    padding: 0
+  }
+  header ul#menu li{
+    float: left;
+    width: 100%;
+    text-align: left;
+    margin-top: 5px;
+  }
+  header button {
+    display: block;
+    float: right;
+    margin-top: 0.5em;
+    margin-right: 0.5em;
+    width: 2.5em;
+    height: 2.5em;
+    background-color: #373277;
+    border: none;
+    border-radius: 0.7em;
+    padding: 0;
+  }
+  header button:active {
+    background-color: rgba(94,87,184,0.6);
+  }
+  header button span.icon-bar {
+    display: block;
+    width: 80%;
+    height: 0.15em;
+    background-color: #fff;
+    margin: 0.5em auto;
+  }
+}
+
+img#head {
+    position: relative;
+    bottom: 3px;
+    float: left;
+    width: 30px;
+    height: 30px;
+}

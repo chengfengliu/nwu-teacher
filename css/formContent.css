@@ -1,0 +1,17 @@
+.addRow {
+  animation:add 3s; 
+}
+.deleteRow {
+  animation:add 3s; 
+}
+@keyframes add {
+  0%   {background:white;}
+  50%  {background:#69c0ff;}
+  100% {background:white;}
+}
+
+.uploadButton {
+  float: right;
+  margin-top: 20px;
+  margin-right: 20px;
+}

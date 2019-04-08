@@ -1,0 +1,15 @@
+div#content {
+  background-color: #fff;
+  height: 1000px;
+  margin-bottom: 40px;
+}
+.contentPagination {
+  margin-left: 20px;
+  margin-top: 20px;
+  float: left;
+}
+.addButton {
+  margin-top: 20px;
+  margin-right: 20px;
+  float: right;
+}
