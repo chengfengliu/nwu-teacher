@@ -9,7 +9,7 @@ class Sider extends Component {
     super(props)
   }
   handleClick (e) {
-    console.log('click ', e)
+    // console.log('click ', e)
     this.props.changeTable(e.key)
   }
 
@@ -21,13 +21,19 @@ class Sider extends Component {
         mode="inline"
       >
         <SubMenu key="sub1" title={<span><Icon type="mail" /><span>教学成果</span></span>}>
-          <MenuItemGroup key="g1" title="Item 1">
-            <Menu.Item key="mooc">MOOC</Menu.Item>
-          </MenuItemGroup>
-          <MenuItemGroup key="g2" title="Item 2">
-            <Menu.Item key="3">Option 3</Menu.Item>
-            <Menu.Item key="4">Option 4</Menu.Item>
-          </MenuItemGroup>
+          <Menu.Item key="mooc">MOOC</Menu.Item>
+          <Menu.Item key="textbook">教材</Menu.Item>
+          <Menu.Item key="top_teacher">教学名师</Menu.Item>
+          <Menu.Item key="instruct_student_innovate">指导大学生创新</Menu.Item>
+          <Menu.Item key="teach_reformation">教改项目</Menu.Item>
+          <Menu.Item key="teach_award">教学获奖</Menu.Item>
+          <Menu.Item key="teach_paper">教学论文</Menu.Item>
+          <Menu.Item key="teach_model_center">教学示范中心</Menu.Item>
+          <Menu.Item key="teach_team">教学团队</Menu.Item>
+          <Menu.Item key="excellent_course">精品课程</Menu.Item>
+          <Menu.Item key="7">竞赛</Menu.Item>
+          <Menu.Item key="instruct_student_match">竞赛获奖</Menu.Item>
+          <Menu.Item key="major">专业</Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>本科教育</span></span>}>
           <Menu.Item key="5">Option 5</Menu.Item>

@@ -22,10 +22,10 @@ class Workbench extends Component {
       <Layout>
         <Header />
         <Row>
-          <Col span={1}></Col>
+          {/* <Col span={1}></Col> */}
           <Col span={4}><Sider changeTable={this.changeTable.bind(this)}/></Col>
-          <Col span={18}><FormContent table={this.state.table}/></Col>
-          <Col span={1}></Col>
+          <Col span={20}><FormContent table={this.state.table} selectedRowKeys={[]}/></Col>
+          {/* <Col span={1}></Col> */}
         </Row>              
         <Footer />
       </Layout>

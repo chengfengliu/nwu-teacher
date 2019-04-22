@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
 import '../../../../css/content.css'
-import EditableCell from './EditableCell.js'
-import { Pagination, Table, Popconfirm, Form, notification, Button, Icon, message, Upload } from 'antd'
-import EditableContext from './Context.js'
 import '../../../../css/formContent.css'
+import EditableCell from './EditableCell.js'
+import EditableContext from './Context.js'
+import { Pagination, Table, Popconfirm, Form, notification, Button, Icon, message, Upload } from 'antd'
+
 class Content extends Component { 
   constructor(props) {
     super(props)
@@ -16,7 +17,8 @@ class Content extends Component {
       columns: [], // 表格列
       editingKey: '', // 正在编辑的单元行
       hadRolledBack: false, // 是否已撤销
-      isAdding: false // 是否正在添加
+      isAdding: false, // 是否正在添加
+      selectedRowKeys: [], // 正在选择的行
     }
   }
   componentWillReceiveProps(nextProps) {
@@ -25,16 +27,15 @@ class Content extends Component {
       const that = this
       $.ajax({
         // 请求表的页数
-        url: '/api/getPageCount',
+        url: '/api/getPageCountAndColumns',
         type: 'post',
         data: {
           table: nextProps.table
         },
-        success(responsePageCount) {
-          // console.log('responsePageCount.pageCount',responsePageCount.pageCount)
+        success(responsePageCountAndColumns) {
           $.ajax({
             // 请求表第一页的数据
-            url: `/api/get${nextProps.table}Item`,
+            url: `/api/${nextProps.table}/getItem`,
             type: 'post',
             data: {
               page: that.state.page
@@ -44,103 +45,57 @@ class Content extends Component {
               responseData.data.forEach(item => {
                 item.key = item.id
               })
+              responsePageCountAndColumns.columns.push(
+                {
+                  title: '操作',
+                  dataIndex: 'operation',
+                  fixed: nextProps.table === 'instruct_student_innovate' || nextProps.table === 'instruct_student_match' ? 'right' : null,
+                  render: (text, record) => { // 参数分别为当前行的值，当前行数据
+                    const { editingKey } = that.state
+                    // console.log('record',record)
+                    const editable = that.isEditing(record)
+                    return (
+                      <div>
+                        {editable ? (
+                          <span>
+                              <EditableContext.Consumer>
+                              {form => (
+                                <a
+                                  href="javascript:;"
+                                  onClick={() => that.save(form, record.key)}
+                                  style={{ marginRight: 8 }}
+                                >
+                                  保存
+                                </a>
+                              )}
+                            </EditableContext.Consumer>
+                            <Popconfirm
+                              title="确定取消？"
+                              okText="是" 
+                              cancelText="否"
+                              onConfirm={() => that.cancel(record.key)}
+                            >
+                              <a>取消</a>
+                            </Popconfirm>
+                          </span>
+                        ) : (
+                          <div>
+                            <a disabled={editingKey !== ''} onClick={() => that.edit(record.key)} style={{marginRight: '5px'}}>编辑</a>
+                            <a disabled={editingKey !== ''} onClick={() => that.delete(record.key)}>删除</a>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  },
+                },
+              )
               that.setState({
-                pageCount: responsePageCount.pageCount,
+                pageCount: responsePageCountAndColumns.pageCount,
+                page: 1,
                 table: nextProps.table,
+                selectedRowKeys: nextProps.selectedRowKeys,
                 data: responseData.data,
-                columns: [
-                  {
-                    title: '课程名',
-                    dataIndex: 'course_name',
-                    editable: true
-                  },
-                  {
-                    title: '课程级别',
-                    dataIndex: 'course_level',
-                    editable: true
-                  },
-                  {
-                    title: '主持人工号',
-                    dataIndex: 'director_job_id',
-                    editable: true,
-                  },
-                  {
-                    title: '成员',
-                    dataIndex: 'member',
-                    editable: true,
-                  },
-                  {
-                    title: '是否在线',
-                    dataIndex: 'is_online',
-                    editable: true,
-                  },
-                  {
-                    title: '时间',
-                    dataIndex: 'time',
-                    editable: true,
-                  },
-                  {
-                    title: '备注',
-                    dataIndex: 'remark',
-                    editable: true,
-                  },
-                  {
-                    title: '绩效计分',
-                    dataIndex: 'performance_scroe',
-                    editable: true,
-                  },
-                  {
-                    title: '奖金',
-                    dataIndex: 'bonus',
-                    editable: true,
-                  },
-                  {
-                    title: '工作量',
-                    dataIndex: 'workload',
-                    editable: true,
-                  }, 
-                  {
-                    title: '操作',
-                    dataIndex: 'operation',
-                    render: (text, record) => { // 参数分别为当前行的值，当前行数据
-                      const { editingKey } = that.state
-                      // console.log('record',record)
-                      const editable = that.isEditing(record)
-                      return (
-                        <div>
-                          {editable ? (
-                            <span>
-                                <EditableContext.Consumer>
-                                {form => (
-                                  <a
-                                    href="javascript:;"
-                                    onClick={() => that.save(form, record.key)}
-                                    style={{ marginRight: 8 }}
-                                  >
-                                    保存
-                                  </a>
-                                )}
-                              </EditableContext.Consumer>
-                              <Popconfirm
-                                title="确定取消？"
-                                okText="是" 
-                                cancelText="否"
-                                onConfirm={() => that.cancel(record.key)}
-                              >
-                                <a>取消</a>
-                              </Popconfirm>
-                            </span>
-                          ) : (
-                            <div>
-                              <a disabled={editingKey !== ''} onClick={() => that.edit(record.key)} style={{marginRight: '5px'}}>编辑</a>
-                              <a disabled={editingKey !== ''} onClick={() => that.delete(record.key)}>删除</a>
-                            </div>
-                          )}
-                        </div>
-                      )
-                    },
-                  },
-                ]
+                columns: responsePageCountAndColumns.columns,
               })
             }
           })
@@ -149,11 +104,12 @@ class Content extends Component {
      
     }
   }
+
   onChange(page) {
     // console.log('onChange')
     const that = this
     $.ajax({
-      url: `/api/get${this.state.table}Item`,
+      url: `/api/${this.state.table}/getItem`,
       type: 'post',
       data: {
         page
@@ -164,24 +120,21 @@ class Content extends Component {
           item.key = item.id
         })
         if(that.state.isAdding) {
-          // 增加数据
+          // 正在增加数据
+          const editingRow = {
+            key: 'add',
+          }
+          that.state.columns.forEach(item => {
+            if(item.dataIndex !== "operation") {
+              editingRow[item.dataIndex] = null
+            }
+          })
+          // console.log('editingRow', editingRow)
           if(responseData.data.length === 10) {
             // 最后一页数据已到达10条
             // console.log('another page')
             responseData.data = []
-            responseData.data.push({
-              bonus:null,
-              course_level: null,
-              course_name: null,
-              director_job_id: null,
-              is_online: null,
-              key: "add",
-              member: null,
-              performance_scroe: null,
-              remark: null,
-              time: null,
-              workload: null
-            })
+            responseData.data.push(editingRow)
             that.setState({
               page: page + 1,
               pageCount: page + 1,
@@ -189,19 +142,7 @@ class Content extends Component {
               editingKey: 'add'
             })
           } else {
-            responseData.data.push({
-              bonus:null,
-              course_level: null,
-              course_name: null,
-              director_job_id: null,
-              is_online: null,
-              key: "add",
-              member: null,
-              performance_scroe: null,
-              remark: null,
-              time: null,
-              workload: null
-            })
+            responseData.data.push(editingRow)
             that.setState({
               page: page,
               data: responseData.data,
@@ -241,23 +182,12 @@ class Content extends Component {
       if (error) {
         return;
       }
-      // console.log('row',row,'key',key)
+      // console.log('row', row, 'key', key, this.state.editingKey)
       if(this.state.editingKey === 'add') {
         $.ajax({
-          url: `/api/add${that.state.table}Item`,
+          url: `/api/${that.state.table}/addItem`,
           type: 'post',
-          data: {
-            course_name: row.course_name,
-            course_level: row.course_level,
-            director_job_id: row.director_job_id,
-            member: row.member,
-            is_online: row.is_online,
-            time: row.time,
-            remark: row.remark,
-            performance_scroe: row.performance_scroe,
-            bonus: row.bonus,
-            workload: row.workload
-          },
+          data: row,
           success(responseData) {
             // console.log('resData',responseData)
             if(responseData.success) {
@@ -281,22 +211,11 @@ class Content extends Component {
           }
         })
       } else {
+        row.id = key
         $.ajax({
-          url: `/api/edit${that.state.table}Item`,
+          url: `/api/${that.state.table}/editItem`,
           type: 'post',
-          data: {
-            id: key, 
-            course_name: row.course_name,
-            course_level: row.course_level,
-            director_job_id: row.director_job_id,
-            member: row.member,
-            is_online: row.is_online,
-            time: row.time,
-            remark: row.remark,
-            performance_scroe: row.performance_scroe,
-            bonus: row.bonus,
-            workload: row.workload
-          },
+          data: row,
           success(responseData) {
             // console.log('resData',responseData)
             if(responseData.success) {
@@ -314,16 +233,19 @@ class Content extends Component {
                 newData.push(row);
                 that.setState({ data: newData, editingKey: '' });
               }
+            } else {
+              message.error('编辑失败（格式不正确）')
             }
           }
         })
       }
     })
   }
+
   delete(key) {
     const that = this
     $.ajax({
-      url: `/api/remove${that.state.table}Item`,
+      url: `/api/${that.state.table}/removeItem`,
       type: 'post',
       data: {
         id: key
@@ -336,7 +258,10 @@ class Content extends Component {
           if (index > -1) {
             const row = newData.splice(index, 1)
             // console.log('row',row)
-            if(newData.length === 0) {
+            if(newData.length === 0 && that.state.page === 1) {
+              // 最后一页也是第一页删除唯一的一行
+              that.setState({data: []})
+            } else if (newData.length === 0) {
               // 最后一页删除唯一的一行
               that.onChange(that.state.page - 1)
               that.setState({pageCount: that.state.pageCount - 1})
@@ -369,25 +294,24 @@ class Content extends Component {
       }
     })
   }
+
   commit() {
     if(!this.state.hadRolledBack) {
       // console.log('commit')
       const that = this
       $.ajax({
-        url: `/api/commit${that.state.table}Item`,
+        url: `/api/commit`,
         type: 'get',
-        success(responseData) {
-          // console.log(responseData)
-        }
       })
     }
   }
+  
   rollback(index, row, notificationKey) {
     notification.close(notificationKey)
     // console.log('rollback index',index,row,notificationKey)
     const that = this
     $.ajax({
-      url: `/api/rollback${that.state.table}Item`,
+      url: `/api/rollback`,
       type: 'get',
       success(responseData) {
         if(responseData.success) {
@@ -414,11 +338,44 @@ class Content extends Component {
     this.setState({page: this.state.pageCount, isAdding: true})
     this.onChange(this.state.pageCount)
   }
+
   download() {
-    window.open("/api/downloadmoocItem")
+    window.open(`/api/${this.state.table}/downloadItem`)
   }
+
+  downloadTemplate() {
+    window.open(`/api/${this.state.table}/downloadTemplate`)
+  }
+
+  deleteSelectedRows() {
+    console.log('deleteSelectedRows',this.state.selectedRowKeys)
+    message.loading('正在删除中', 0)
+    const that = this
+    $.ajax({
+      url: `/api/${this.state.table}/deleteSelectedRows`,
+      method: 'post',
+      data: {
+        selectedRowKeys: this.state.selectedRowKeys
+      },
+      success(responseData) {
+        if (responseData.success) {
+          message.destroy()
+          message.success('删除成功')
+          that.onChange(that.state.page)
+          that.setState({
+            pageCount: responseData.pageCount,
+            selectedRowKeys: []
+          })
+        } else {
+          message.destroy()
+          message.error('删除失败')
+        }
+      }
+    })
+  }
+
   render() {
-    // console.log('render','this.state.data',this.state.data)
+    // console.log('render','this.state.data',this.state)
     const columns = this.state.columns.map((col) => {
       if (!col.editable) {
         return col
@@ -438,41 +395,81 @@ class Content extends Component {
         cell: EditableCell
       }
     }
+    const that = this
     const uploadProps = {
       name: 'file',
-      action: '/api/uploadmoocItem',
-      onChange(info) {
+      action: `/api/${this.state.table}/uploadItem`,
+      onChange (info) {
         console.log('info',info.file.status,info)
         if (info.file.status !== 'uploading') {
           // console.log(info.file, info.fileList)
         }
         if (info.file.status === 'done' && info.file.response.success) {
           message.success(`${info.file.name} 文件上传成功`)
+          that.setState({
+            pageCount: info.file.response.pageCount,
+          })
+          that.onChange(info.file.response.pageCount)
         } else if (info.file.status === 'done' && !info.file.response.success && info.file.response.requiredFieldNull) {
-          message.error(`${info.file.name} 文件上传成功(部分记录必填项为空，未录入)`)
+          message.error(`${info.file.name} 文件上传失败(部分记录必填项为空)`)
+        } else if (info.file.status === 'done' && !info.file.response.success && info.file.response.formatErr) {
+          message.error(`${info.file.name} 文件上传失败(部分记录格式错误)`)
         } else if (info.file.status === 'done' && !info.file.response.success) {
           message.error(`${info.file.name} 文件上传失败`)
         }
+        if (info.file.status === 'error') {
+          message.error(`${info.file.name} 文件上传失败`)
+        }
+      },
+    }
+    const rowSelection = {
+      selectedRowKeys: this.state.selectedRowKeys,
+      onChange: (selectedRowKeys, selectedRows) => {
+        // console.log(`selectedRowKeys: ${selectedRowKeys}`,typeof selectedRowKeys, 'selectedRows: ', selectedRows)
+        this.setState({
+          selectedRowKeys
+        })
       },
     }
     // console.log('columns',columns)
     return (
       <div id="content">
         <EditableContext.Provider value={this.props.form}>
-          <Table components={components} 
-                 columns={columns} 
-                 dataSource={this.state.data} 
-                 pagination={false} 
-                 rowClassName={record => {
-                  if(record.addRow) {
-                    return "addRow"
-                  }
-                 }}
-          />
+          {this.state.table === 'instruct_student_innovate' || this.state.table === 'instruct_student_match' ?
+            <Table rowSelection={this.state.table !== '' ? rowSelection : null}
+                    components={components} 
+                    columns={columns} 
+                    dataSource={this.state.data} 
+                    pagination={false} 
+                    rowClassName={record => {
+                    if(record.addRow) {
+                      return "addRow"
+                    }
+                    }}
+                    scroll={{ x: 3000 }}
+            /> :
+            <Table rowSelection={this.state.table !== '' ? rowSelection : null}
+                    components={components} 
+                    columns={columns} 
+                    dataSource={this.state.data} 
+                    pagination={false} 
+                    rowClassName={record => {
+                      if(record.addRow) {
+                        return "addRow"
+                      }
+                    }}
+              />
+          }
           {this.state.table !== '' ? <Pagination className="contentPagination" current={this.state.page} defaultCurrent={this.state.page} total={this.state.pageCount * 10} onChange={this.onChange.bind(this)} /> : null}
-          {this.state.table !== '' ? <Button className="addButton" type="primary" icon="download" onClick={this.download.bind(this)}>导出</Button> : null}
-          {this.state.table !== '' ? <Upload className= "uploadButton" {...uploadProps}><Button type="primary" icon="upload">导入</Button></Upload> : null}
+          {this.state.table !== '' ? <Button className="addButton" type="primary" icon="export" onClick={this.download.bind(this)}>导出</Button> : null}
+          {this.state.table !== '' ? <Upload className= "uploadButton" {...uploadProps}><Button type="primary" icon="import">导入</Button></Upload> : null}
+          {this.state.table !== '' ? <Button className= "uploadButton" type="primary" icon="download" onClick={this.downloadTemplate.bind(this)}>下载模板</Button> : null}
           {this.state.table !== '' ? <Button className="addButton" type="primary" icon="plus" onClick={this.add.bind(this)}>添加</Button> : null}
+          {this.state.table !== '' && this.state.selectedRowKeys.length !== 0 ? 
+           <Popconfirm title="此操作无法撤销。确定删除？" onConfirm={this.deleteSelectedRows.bind(this)} okText="确定" cancelText="取消">
+            <Button className="addButton" type="primary" icon="delete">一键删除</Button>
+           </Popconfirm>
+          : null}
         </EditableContext.Provider>
       </div>
 

@@ -1,19 +1,35 @@
 module.exports.columns = [
   {
-    title: '课程名',
-    dataIndex: 'course_name',
+    title: '教改类型',
+    dataIndex: 'project_type',
     editable: true,
     notNull: true,
     type: 'char',
     templateIndex: 0,
   },
   {
-    title: '课程级别',
-    dataIndex: 'course_level',
+    title: '教改名称',
+    dataIndex: 'project_name',
     editable: true,
     notNull: true,
     type: 'char',
     templateIndex: 1,
+  },
+  {
+    title: '教改级别',
+    dataIndex: 'project_level',
+    editable: true,
+    notNull: true,
+    type: 'char',
+    templateIndex: 2,
+  },
+  {
+    title: '教改类别',
+    dataIndex: 'project_importance',
+    editable: true,
+    notNull: true,
+    type: 'char',
+    templateIndex: 3,
   },
   {
     title: '主持人姓名',
@@ -21,7 +37,7 @@ module.exports.columns = [
     editable: false,
     notNull: false,
     type: 'char',
-    templateIndex: 2,
+    templateIndex: 4,
     sourceTable: 'teacher_tbl',
     primaryKey: 'director_job_id',
     foreignKey: 'job_id',
@@ -32,31 +48,23 @@ module.exports.columns = [
     editable: true,
     notNull: true,
     type: 'int',
-    templateIndex: 3,
+    templateIndex: 5,
   },
   {
-    title: '参与人',
+    title: '参加人',
     dataIndex: 'member',
     editable: true,
     notNull: false,
     type: 'char',
-    templateIndex: 4,
-  },
-  {
-    title: '是否在线',
-    dataIndex: 'is_online',
-    editable: true,
-    notNull: true,
-    type: 'char',
     templateIndex: 6,
   },
   {
-    title: '时间',
-    dataIndex: 'time',
+    title: '获批时间',
+    dataIndex: 'approve_time',
     editable: true,
     notNull: true,
     type: 'char',
-    templateIndex: 5,
+    templateIndex: 7,
   },
   {
     title: '备注',
@@ -64,7 +72,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'char',
-    templateIndex: 7,
+    templateIndex: 8,
   },
   {
     title: '绩效计分',
@@ -72,7 +80,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 8,
+    templateIndex: 9,
   },
   {
     title: '奖金',
@@ -80,7 +88,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 9,
+    templateIndex: 10,
   },
   {
     title: '工作量',
@@ -88,6 +96,10 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 10,
+    templateIndex: 11,
   }, 
 ]
+
+// mock语句
+// insert into textbook(textbook_type,textbook_name,textbook_publisher,director_job_id,member,publish_time,is_excellent,remark,performance_scroe,bonus,workload) values('国家级','数据结构','西北大学出版社',20130069,'cf','2019/01/01','是','无备注',1,1,1);
+

@@ -1,36 +1,32 @@
-const mysqlConfig = require('./mysqlConfig')
 const Table = require('./models/Table.js')
 const User = require('./models/User.js')
-const Mooc = require('./models/Mooc.js')
 
-const mysql = require('mysql')
 const Router = require('koa-router')
 const multer = require('koa-multer')
 const upload = multer({ dest: 'uploads/' })
 
 const router = new Router()
 
-// 连接MySQL数据库
-const connection = mysql.createConnection(mysqlConfig)
-
 // 路由
 router.get(["/", "/workbench"], async(ctx, next) => {
   await ctx.render('index')
   await next()
 })
-router.post('/api/getPageCount', Table.getPageCount(connection))
-router.post('/api/findUser', User.findUser(connection))
-router.post('/api/modifyPassword', User.modifyPassword(connection))
-router.post('/api/addAssistant', User.addAssistant(connection))
-// mooc
-router.post('/api/getmoocItem', Mooc.getmoocItem(connection))
-router.post('/api/addmoocItem', Mooc.addmoocItem(connection))
-router.post('/api/removemoocItem', Mooc.removemoocItem(connection))
-router.get('/api/commitmoocItem', Mooc.commitmoocItem(connection))
-router.get('/api/rollbackmoocItem', Mooc.rollbackmoocItem(connection))
-router.post('/api/editmoocItem', Mooc.editmoocItem(connection))
-router.post('/api/searchmoocItem', Mooc.searchmoocItem(connection))
-router.post('/api/uploadmoocItem', upload.single('file'), Mooc.uploadmoocItem(connection))
-router.get('/api/downloadmoocItem', Mooc.downloadmoocItem(connection))
+router.post('/api/getPageCountAndColumns', Table.getPageCountAndColumns())
+router.get('/api/commit', Table.commit())
+router.get('/api/rollback', Table.rollback())
+
+router.post('/api/findUser', User.findUser())
+router.post('/api/modifyPassword', User.modifyPassword())
+router.post('/api/addAssistant', User.addAssistant())
+
+router.post('/api/:table/getItem', Table.getItem())
+router.post('/api/:table/addItem', Table.addItem())
+router.post('/api/:table/editItem', Table.editItem())
+router.post('/api/:table/removeItem', Table.removeItem())
+router.post('/api/:table/uploadItem', upload.single('file'), Table.uploadItem())
+router.get('/api/:table/downloadItem', Table.downloadItem())
+router.get('/api/:table/downloadTemplate', Table.downloadTemplate())
+router.post('/api/:table/deleteSelectedRows', Table.deleteSelectedRows())
 
 module.exports = router

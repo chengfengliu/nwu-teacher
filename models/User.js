@@ -1,5 +1,10 @@
 const md5 = require('md5')
-module.exports.findUser = connection => {
+// 连接MySQL数据库
+const mysql = require('mysql')
+const mysqlConfig = require('../mysqlConfig')
+const connection = mysql.createConnection(mysqlConfig)
+
+module.exports.findUser = () => {
   return async(ctx, next) => {
     const {job_id, password} = ctx.request.body
     // console.log(job_id, password,ctx.request.body)
@@ -50,7 +55,8 @@ module.exports.findUser = connection => {
     await next()
   }
 }
-module.exports.addAssistant = connection => {
+
+module.exports.addAssistant = () => {
   return async(ctx, next) => {
     const {job_id} = ctx.request.body
     // console.log(job_id)
@@ -75,7 +81,7 @@ module.exports.addAssistant = connection => {
   }
 }
 
-module.exports.modifyPassword = connection => {
+module.exports.modifyPassword = () => {
   return async(ctx, next) => {
     const {newPassword, job_id} = ctx.request.body
     // console.log('modifyPassword', newPassword, job_id,`UPDATE users SET password = '${md5(newPassword)}' WHERE job_id = ${job_id};`)

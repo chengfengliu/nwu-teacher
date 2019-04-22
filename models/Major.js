@@ -1,54 +1,46 @@
 module.exports.columns = [
   {
-    title: '课程名',
-    dataIndex: 'course_name',
+    title: '类别',
+    dataIndex: 'major_type',
     editable: true,
     notNull: true,
     type: 'char',
     templateIndex: 0,
   },
   {
-    title: '课程级别',
-    dataIndex: 'course_level',
+    title: '专业',
+    dataIndex: 'major_name',
     editable: true,
     notNull: true,
     type: 'char',
     templateIndex: 1,
   },
   {
-    title: '主持人姓名',
+    title: '级别',
+    dataIndex: 'major_level',
+    editable: true,
+    notNull: true,
+    type: 'char',
+    templateIndex: 2,
+  },
+  {
+    title: '负责人姓名',
     dataIndex: 'teacher_name',
     editable: false,
     notNull: false,
     type: 'char',
-    templateIndex: 2,
+    templateIndex: 3,
     sourceTable: 'teacher_tbl',
     primaryKey: 'director_job_id',
     foreignKey: 'job_id',
   },
   {
-    title: '主持人工号',
+    title: '负责人工号',
     dataIndex: 'director_job_id',
     editable: true,
     notNull: true,
     type: 'int',
-    templateIndex: 3,
-  },
-  {
-    title: '参与人',
-    dataIndex: 'member',
-    editable: true,
-    notNull: false,
-    type: 'char',
     templateIndex: 4,
-  },
-  {
-    title: '是否在线',
-    dataIndex: 'is_online',
-    editable: true,
-    notNull: true,
-    type: 'char',
-    templateIndex: 6,
   },
   {
     title: '时间',
@@ -64,7 +56,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'char',
-    templateIndex: 7,
+    templateIndex: 6,
   },
   {
     title: '绩效计分',
@@ -72,7 +64,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 8,
+    templateIndex: 7,
   },
   {
     title: '奖金',
@@ -80,7 +72,7 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 9,
+    templateIndex: 8,
   },
   {
     title: '工作量',
@@ -88,6 +80,10 @@ module.exports.columns = [
     editable: true,
     notNull: false,
     type: 'float',
-    templateIndex: 10,
+    templateIndex: 9,
   }, 
 ]
+
+// mock语句
+// insert into textbook(textbook_type,textbook_name,textbook_publisher,director_job_id,member,publish_time,is_excellent,remark,performance_scroe,bonus,workload) values('国家级','数据结构','西北大学出版社',20130069,'cf','2019/01/01','是','无备注',1,1,1);
+
