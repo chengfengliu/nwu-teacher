@@ -21,6 +21,7 @@ const TeachTeam = require('./TeachTeam.js')
 const ExcellentCourse = require('./ExcellentCourse.js')
 const Major = require('./Major.js')
 const InstructStudentMatch = require('./InstructStudentMatch.js')
+const ClassTbl = require('./ClassTbl.js')
 
 const columns = {
   'mooc': Mooc.columns,
@@ -35,6 +36,7 @@ const columns = {
   'excellent_course': ExcellentCourse.columns,
   'major': Major.columns,
   'instruct_student_match': InstructStudentMatch.columns,
+  'class_tbl': ClassTbl.columns,
 }
 
 module.exports.getPageCountAndColumns = () => {

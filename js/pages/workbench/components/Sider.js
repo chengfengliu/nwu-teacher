@@ -36,7 +36,7 @@ class Sider extends Component {
           <Menu.Item key="major">专业</Menu.Item>
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>本科教育</span></span>}>
-          <Menu.Item key="5">Option 5</Menu.Item>
+          <Menu.Item key="class_tbl">班级</Menu.Item>
           <Menu.Item key="6">Option 6</Menu.Item>
           <SubMenu key="sub3" title="Submenu">
             <Menu.Item key="7">Option 7</Menu.Item>
