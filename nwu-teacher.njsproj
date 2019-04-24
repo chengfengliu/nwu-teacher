@@ -87,8 +87,23 @@ NODE_PORT=4000</Environment>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="models\ExcellentCourse.js" />
+    <Compile Include="models\ExtraJobWorkloadTbl.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\GradprojectTbl.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\InstructStudentInnovate.js" />
     <Compile Include="models\InstructStudentMatch.js" />
+    <Compile Include="models\InternshipBaseTbl.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\InternshipTbl.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="models\InternshipWorkloadTbl.js">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="models\Major - Copy.js" />
     <Compile Include="models\Major.js" />
     <Compile Include="models\Table.js" />

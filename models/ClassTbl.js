@@ -1,11 +1,19 @@
 ﻿module.exports.columns = [
     {
+        title: '班级id',
+        dataIndex: 'id',
+        editable: true,
+        notNull: true,
+        type: 'int',
+        templateIndex: 0,
+    },
+    {
         title: '年级',
         dataIndex: 'grade',
         editable: true,
         notNull: true,
         type: 'char',
-        templateIndex: 0,
+        templateIndex: 1,
     },
     {
         title: '学院',
@@ -13,7 +21,7 @@
         editable: true,
         notNull: true,
         type: 'char',
-        templateIndex: 1,
+        templateIndex: 2,
     },
     {
         title: '专业',
@@ -21,7 +29,7 @@
         editable: true,
         notNull: true,
         type: 'char',
-        templateIndex: 2,
+        templateIndex: 3,
     },
     {
         title: '班级',
@@ -29,7 +37,7 @@
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 3,
+        templateIndex: 4,
     },
     {
         title: '人数',
@@ -37,7 +45,7 @@
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 4,
+        templateIndex: 5,
     },
 ]
 

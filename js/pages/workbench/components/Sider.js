@@ -37,7 +37,14 @@ class Sider extends Component {
         </SubMenu>
         <SubMenu key="sub2" title={<span><Icon type="appstore" /><span>本科教育</span></span>}>
           <Menu.Item key="class_tbl">班级</Menu.Item>
-          <Menu.Item key="6">Option 6</Menu.Item>
+          <Menu.Item key="course_tbl">课程</Menu.Item>
+          <Menu.Item key="course_workload_tbl">课程工作量</Menu.Item>
+          <Menu.Item key="extra_job_workload_tbl">教师职务补贴工作量</Menu.Item>
+          <Menu.Item key="internship_base_tbl">实习基地</Menu.Item>
+          <Menu.Item key="internship_tbl">实习</Menu.Item>
+          <Menu.Item key="internship_workload_tbl">实习工作量</Menu.Item>
+          <Menu.Item key="gradproject_tbl">毕业设计</Menu.Item>
+          <Menu.Item key="corporate_mentor_tbl">企业导师</Menu.Item>
           <SubMenu key="sub3" title="Submenu">
             <Menu.Item key="7">Option 7</Menu.Item>
             <Menu.Item key="8">Option 8</Menu.Item>

@@ -16,10 +16,10 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE teacher_tbl (
         job_id bigint NOT NULL PRIMARY KEY,
-        teacher_name varchar(5) NOT NULL,
-        title varchar(10) DEFAULT NULL,
-        date_of_birth varchar(20) DEFAULT NULL,
-        category varchar(20) DEFAULT NULL
+        teacher_name text NOT NULL,
+        title text DEFAULT NULL,
+        date_of_birth text DEFAULT NULL,
+        category text DEFAULT NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8`)
             console.log('created teacher_tbl table')
         }
@@ -32,7 +32,7 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE users (
         job_id bigint NOT NULL PRIMARY KEY,
-        password varchar(40) NOT NULL, 
+        password text NOT NULL, 
         level enum('visitor', 'assistant', 'admin') not null
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8`)
             console.log('created users table')
@@ -67,7 +67,7 @@ connection.connect(err => {
         director_job_id bigint not null, 
         member text,
         is_online enum('是','否') not null, 
-        time varchar(20) not null,
+        time text not null,
         remark text,
         performance_scroe float, 
         bonus float,
@@ -85,7 +85,7 @@ connection.connect(err => {
         id int auto_increment primary key,
         project_name text not null,
         project_type text not null,
-        approve_time varchar(20) not null,
+        approve_time text not null,
         project_major text,
         participation_number int(5),
         project_status enum('在研','结题'),
@@ -94,15 +94,15 @@ connection.connect(err => {
         appropriation_approve float,
         project_level text,
         director_id bigint,
-        director_name varchar(5),
+        director_name text,
         director_major text,
         director_grade text,
         member1_id bigint,
-        member1_name varchar(5),
+        member1_name text,
         member1_major text,
         member1_grade text,
         member2_id bigint,
-        member2_name varchar(5),
+        member2_name text,
         member2_major text,
         member2_grade text,
         mentor_job_id bigint not null,
@@ -126,7 +126,7 @@ connection.connect(err => {
         textbook_publisher text not null,
         director_job_id bigint not null,
         member text,
-        publish_time varchar(20) not null,
+        publish_time text not null,
         is_excellent enum('是','否') not null,
         remark text,
         performance_scroe float,
@@ -149,7 +149,7 @@ connection.connect(err => {
         project_importance text not null,
         director_job_id bigint not null,
         member text,
-        approve_time varchar(20) not null,
+        approve_time text not null,
         remark text,
         performance_scroe float,
         bonus float,
@@ -171,7 +171,7 @@ connection.connect(err => {
         award_sublevel text not null,
         director_job_id bigint not null,
         member text,
-        win_time varchar(20) not null,
+        win_time text not null,
         remark text,
         performance_scroe float,
         bonus float,
@@ -191,7 +191,7 @@ connection.connect(err => {
         publish_journal text not null, 
         chief_editor_id bigint not null, 
         sub_editor text, 
-        publish_time varchar(20) not null, 
+        publish_time text not null, 
         issue text, 
         remark text,
         performance_scroe float, 
@@ -210,7 +210,7 @@ connection.connect(err => {
         id int auto_increment primary key, 
         teacher_job_id bigint not null, 
         level text not null, 
-        win_time varchar(20) not null, 
+        win_time text not null, 
         remark text,
         performance_scroe float, 
         bonus float,
@@ -229,7 +229,7 @@ connection.connect(err => {
         center_name text not null, 
         center_level text not null, 
         director_job_id bigint not null, 
-        win_time varchar(20) not null, 
+        win_time text not null, 
         remark text
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created teach_model_center table')
@@ -247,7 +247,7 @@ connection.connect(err => {
         team_level text not null, 
         director_job_id bigint not null, 
         member text,
-        win_time varchar(20) not null, 
+        win_time text not null, 
         remark text,
         performance_scroe float, 
         bonus float,
@@ -267,7 +267,7 @@ connection.connect(err => {
         course_name text not null, 
         course_level text not null, 
         director_job_id bigint not null, 
-        win_time varchar(20) not null, 
+        win_time text not null, 
         remark text,
         performance_scroe float, 
         bonus float,
@@ -299,20 +299,20 @@ connection.connect(err => {
             connection.query(`CREATE TABLE instruct_student_match(
         id int auto_increment primary key,
         match_name text not null,
-        win_time varchar(20) not null,
+        win_time text not null,
         participation_number int(5),
         match_level text not null,
         participation_student text,
         director_id bigint,
-        director_name varchar(5),
+        director_name text,
         director_major text,
         director_grade text,
         member1_id bigint,
-        member1_name varchar(5),
+        member1_name text,
         member1_major text,
         member1_grade text,
         member2_id bigint,
-        member2_name varchar(5),
+        member2_name text,
         member2_major text,
         member2_grade text,
         other_member text,
@@ -336,7 +336,7 @@ connection.connect(err => {
         major_name text not null, 
         major_level text not null, 
         director_job_id bigint not null, 
-        time varchar(20) not null,
+        time text not null,
         remark text, 
         performance_scroe float, 
         bonus float,
@@ -352,9 +352,9 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE class_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        grade varchar(20) NOT NULL,
-        college varchar(20) NOT NULL,
-        major varchar(20) NOT NULL,
+        grade text NOT NULL,
+        college text NOT NULL,
+        major text NOT NULL,
         class_num int(11) DEFAULT NULL,
         student_num int(11) DEFAULT NULL,
         PRIMARY KEY (id)
@@ -369,12 +369,12 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE corporate_mentor_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        name varchar(5) NOT NULL,
-        title varchar(10) DEFAULT NULL,
-        academic_degree varchar(10) DEFAULT NULL,
-        date_of_birth datetime DEFAULT NULL,
-        focus_field varchar(20) DEFAULT NULL,
-        work_unit varchar(20) DEFAULT NULL,
+        name text NOT NULL,
+        title text DEFAULT NULL,
+        academic_degree text DEFAULT NULL,
+        date_of_birth text DEFAULT NULL,
+        focus_field text DEFAULT NULL,
+        work_unit text DEFAULT NULL,
         PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created corporate_mentor_tbl table')
@@ -387,9 +387,9 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE course_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        course_name varchar(20) NOT NULL,
-        course_type varchar(20) NOT NULL,
-        course_nature varchar(20) NOT NULL,
+        course_name text NOT NULL,
+        course_type enum('理论课','课内实验','上机','其它') NOT NULL,
+        course_nature enum('平台','必修','选修') NOT NULL,
         speciality int(11) DEFAULT NULL,
         plan_hours float DEFAULT NULL,
         credit float DEFAULT NULL,
@@ -407,9 +407,9 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE course_workload_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        course_id int(11) DEFAULT NULL,
-        class_id int(11) DEFAULT NULL,
-        job_id bigint(20) NOT NULL,
+        course_id int(11) NOT NULL,
+        class_id int(11) NOT NULL,
+        teacher_id bigint(20) NOT NULL,
         student_num int(11) DEFAULT NULL,
         time datetime DEFAULT NULL,
         benefit_coefficient float DEFAULT NULL,
@@ -428,8 +428,8 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE extra_job_workload_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        job_id bigint(255) NOT NULL,
-        job_name varchar(20) NOT NULL,
+        teacher_id bigint(255) NOT NULL,
+        job_name text NOT NULL,
         time text,
         converted_hours float DEFAULT NULL,
         remark text,
@@ -445,16 +445,15 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE gradproject_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        gradproject_name varchar(20) NOT NULL,
-        gradproject_type varchar(20) NOT NULL,
+        gradproject_name text NOT NULL,
+        gradproject_type text NOT NULL,
         gradproject_time text,
         credit float DEFAULT NULL,
-        cardinal_num float DEFAULT NULL,
         student_id int(11) DEFAULT NULL,
-        student_name varchar(20) DEFAULT NULL,
-        student_major varchar(20) DEFAULT NULL,
-        student_grade varchar(20) DEFAULT NULL,
-        job_id bigint(20) DEFAULT NULL,
+        student_name text DEFAULT NULL,
+        student_major text DEFAULT NULL,
+        student_grade text DEFAULT NULL,
+        teacher_id bigint(20) DEFAULT NULL,
         corporate_mentor_id int(11) DEFAULT NULL,
         remark text,
         PRIMARY KEY (id)
@@ -469,7 +468,7 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE internship_base_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        internship_base_name varchar(20) DEFAULT NULL,
+        internship_base_name text DEFAULT NULL,
         PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created internship_base_tbl table')
@@ -482,17 +481,16 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE internship_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        internship_name varchar(20) NOT NULL,
-        internship_type varchar(20) NOT NULL,
-        internship_nature varchar(20) NOT NULL,
-        internship_position varchar(20) NOT NULL,
-        internship_base int(11) DEFAULT NULL,
+        internship_name text NOT NULL,
+        internship_type enum('讲座','实训','上机') NOT NULL,
+        internship_nature enum('平台','必修','选修') NOT NULL,
+        internship_position enum('校内','校外') NOT NULL,
+        internship_base int(11) NOT NULL,
         internship_target text,
         plan_hours float DEFAULT NULL,
         credit float DEFAULT NULL,
         cardinal_num float DEFAULT NULL,
         workload float DEFAULT NULL,
-        job_id bigint(20) DEFAULT NULL,
         remark text,
         PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
@@ -506,10 +504,9 @@ connection.connect(err => {
         if (result.length === 0) {
             connection.query(`CREATE TABLE internship_workload_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
-        internship_name varchar(20) NOT NULL,
-        job_id bigint(20) DEFAULT NULL,
-        teacher_name varchar(20) DEFAULT NULL,
-        class_id int(11) DEFAULT NULL,
+        internship_id int(11) NOT NULL,
+        teacher_id bigint(20) NOT NULL,
+        teacher_name text,
         time text,
         length int(11) DEFAULT NULL,
         student_num int(11) DEFAULT NULL,

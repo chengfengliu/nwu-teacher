@@ -22,6 +22,14 @@ const ExcellentCourse = require('./ExcellentCourse.js')
 const Major = require('./Major.js')
 const InstructStudentMatch = require('./InstructStudentMatch.js')
 const ClassTbl = require('./ClassTbl.js')
+const CourseWorkloadTbl = require('./CourseWorkloadTbl.js')
+const CourseTbl = require('./CourseTbl.js')
+const CorporateMentorTbl = require('./CorporateMentorTbl.js')
+const ExtraJobWorkloadTbl = require('./ExtraJobWorkloadTbl.js')
+const GradprojectTbl = require('./GradprojectTbl.js')
+const InternshipBaseTbl = require('./InternshipBaseTbl.js')
+const InternshipTbl = require('./InternshipTbl.js')
+const InternshipWorkloadTbl = require('./InternshipWorkloadTbl.js')
 
 const columns = {
   'mooc': Mooc.columns,
@@ -37,6 +45,14 @@ const columns = {
   'major': Major.columns,
   'instruct_student_match': InstructStudentMatch.columns,
   'class_tbl': ClassTbl.columns,
+  'course_workload_tbl': CourseWorkloadTbl.columns,
+  'course_tbl': CourseTbl.columns,
+  'corporate_mentor_tbl': CorporateMentorTbl.columns,
+  'extra_job_workload_tbl': ExtraJobWorkloadTbl.columns,
+  'gradproject_tbl': GradprojectTbl.columns,
+  'internship_base_tbl': InternshipBaseTbl.columns,
+  'internship_tbl': InternshipTbl.columns,
+  'internship_workload_tbl': InternshipWorkloadTbl.columns,
 }
 
 module.exports.getPageCountAndColumns = () => {
@@ -70,16 +86,21 @@ module.exports.getItem = () => {
     let {page} = ctx.request.body
     page = parseInt(page) === 0 ? 1 : page
     // console.log('page',page)
-    await new Promise(resolve => {
-      const selectColumns = ['id']
+      await new Promise(resolve => {
+      //const selectColumns = ['id']
+      const selectColumns = [ctx.params.table+'.'+'id']//为id加入表名
       let sourceTable = '', primaryKey = '', foreignKey = ''
       columns[ctx.params.table].forEach(item => {
-        if(!item.editable) {
-          sourceTable = item.sourceTable
-          primaryKey = item.primaryKey
-          foreignKey = item.foreignKey
-        }
-        selectColumns.push(item.dataIndex)
+          if (!item.editable) {
+              sourceTable = item.sourceTable
+              primaryKey = item.primaryKey
+              foreignKey = item.foreignKey
+              selectColumns.push(item.sourceTable + '.' + item.dataIndex)//由于在外表，为该列加入外表名
+          }
+          else {
+              selectColumns.push(ctx.params.table + '.' + item.dataIndex)//为每一项处于当前表的列名加入表名
+          }
+          //selectColumns.push(item.dataIndex)
       })
       connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `,${sourceTable} WHERE ${ctx.params.table}.${primaryKey}=${sourceTable}.${foreignKey}`} LIMIT ${(page - 1) * 10}, 10;`, (err, result) => {
         if(err) {
