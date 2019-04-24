@@ -1,0 +1,3 @@
+C:\Users\童贴鑫\source\repos\nwu-teacher\obj\Debug\nwu-teacher.njsprojAssemblyReference.cache
+C:\Users\童贴鑫\source\repos\nwu-teacher\obj\Debug\nwu-teacher.njsproj.CoreCompileInputs.cache
+C:\Users\童贴鑫\source\repos\nwu-teacher\bin\Microsoft.NodejsTools.WebRole.dll
