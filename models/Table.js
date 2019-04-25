@@ -1,3 +1,4 @@
+/// <reference path="../js/pages/workbench/components/Sider.js" />
 const xlsx = require('node-xlsx')
 const send = require('koa-send')
 
@@ -30,6 +31,18 @@ const GradprojectTbl = require('./GradprojectTbl.js')
 const InternshipBaseTbl = require('./InternshipBaseTbl.js')
 const InternshipTbl = require('./InternshipTbl.js')
 const InternshipWorkloadTbl = require('./InternshipWorkloadTbl.js')
+
+
+const publicTable = [
+    {
+        name: 'teacher_tbl', //表名
+        idColumnName: 'job_id', //表的id名，将来会作为其他表的外键
+    },
+    {
+        name: 'internship_tbl', 
+        idColumnName: 'internship_id',
+    },
+]
 
 const columns = {
   'mooc': Mooc.columns,
@@ -87,19 +100,26 @@ module.exports.getItem = () => {
     page = parseInt(page) === 0 ? 1 : page
     // console.log('page',page)
       await new Promise(resolve => {
-      //const selectColumns = ['id']
-      const selectColumns = [ctx.params.table+'.'+'id']//为id加入表名
+
+          const selectColumns = ['id']
+          publicTable.forEach(item => {
+              if (ctx.params.table === item.name) {
+                  selectColumns[0] = `${item.idColumnName} as id`
+              }
+          })
+
       let sourceTable = '', primaryKey = '', foreignKey = ''
       columns[ctx.params.table].forEach(item => {
           if (!item.editable) {
               sourceTable = item.sourceTable
               primaryKey = item.primaryKey
               foreignKey = item.foreignKey
-              selectColumns.push(item.sourceTable + '.' + item.dataIndex)//由于在外表，为该列加入外表名
+              selectColumns.push(`${item.sourceTable}.${item.dataIndex}`)
           }
           else {
-              selectColumns.push(ctx.params.table + '.' + item.dataIndex)//为每一项处于当前表的列名加入表名
+              selectColumns.push(`${ctx.params.table}.${item.dataIndex}`)
           }
+
           //selectColumns.push(item.dataIndex)
       })
       connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `,${sourceTable} WHERE ${ctx.params.table}.${primaryKey}=${sourceTable}.${foreignKey}`} LIMIT ${(page - 1) * 10}, 10;`, (err, result) => {
@@ -345,7 +365,7 @@ module.exports.uploadItem = () => {
         // console.log('notNullIndexs', notNullIndexs,'intAndFloatIndexs',intAndFloatIndexs)
         workSheets[0].data.forEach(item => {
           // console.log('item',item)
-          // console.log('item',item[0], typeof item[0],item[0].length,item[1], typeof item[1],item[1].length,item[2],typeof item[2],item[3], typeof item[3],item[4], typeof item[4],item[5], typeof item[5],item[6], typeof item[6],item[7], typeof item[7],item[8], typeof item[8],item[9], typeof item[9],item[10], typeof item[10],notNullIndexs.every(index => item[index]))
+          console.log('item',item[0], typeof item[0],item[0].length,item[1], typeof item[1],item[1].length,item[2],typeof item[2],item[3], typeof item[3],item[4], typeof item[4],item[5], typeof item[5],item[6], typeof item[6],item[7], typeof item[7],item[8], typeof item[8],item[9], typeof item[9],item[10], typeof item[10],notNullIndexs.every(index => item[index]))
           if(item.length !== 0 && !notNullIndexs.every(index => item[index])) {
             requiredFieldNull = true
             throw new Error('requiredFieldNull')

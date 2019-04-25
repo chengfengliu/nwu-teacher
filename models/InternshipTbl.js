@@ -1,7 +1,7 @@
 ﻿module.exports.columns = [
     {
         title: '实习id',
-        dataIndex: 'id',
+        dataIndex: 'internship_id',
         editable: true,
         notNull: true,
         type: 'int',

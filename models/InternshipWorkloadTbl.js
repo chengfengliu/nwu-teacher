@@ -32,7 +32,7 @@
         templateIndex: 3,
         sourceTable: 'internship_tbl',
         primaryKey: 'internship_id',
-        foreignKey: 'id',
+        foreignKey: 'internship_id',
     },
     {
         title: '实习时间',

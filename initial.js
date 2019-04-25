@@ -480,7 +480,7 @@ connection.connect(err => {
         console.log('creating internship_tbl', result)
         if (result.length === 0) {
             connection.query(`CREATE TABLE internship_tbl (
-        id int(11) NOT NULL AUTO_INCREMENT,
+        internship_id int(11) NOT NULL,
         internship_name text NOT NULL,
         internship_type enum('讲座','实训','上机') NOT NULL,
         internship_nature enum('平台','必修','选修') NOT NULL,
@@ -492,7 +492,7 @@ connection.connect(err => {
         cardinal_num float DEFAULT NULL,
         workload float DEFAULT NULL,
         remark text,
-        PRIMARY KEY (id)
+        PRIMARY KEY (internship_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created internship_tbl table')
         }
