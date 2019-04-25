@@ -91,8 +91,10 @@ module.exports.getItem = () => {
           sourceTable = item.sourceTable
           primaryKey = item.primaryKey
           foreignKey = item.foreignKey
+          selectColumns.push(`${item.sourceTable}.${item.dataIndex}`)
+        } else {
+          selectColumns.push(`${ctx.params.table}.${item.dataIndex}`)
         }
-        selectColumns.push(item.dataIndex)
       })
       connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `,${sourceTable} WHERE ${ctx.params.table}.${primaryKey}=${sourceTable}.${foreignKey}`} LIMIT ${(page - 1) * 10}, 10;`, (err, result) => {
         if(err) {
@@ -100,7 +102,7 @@ module.exports.getItem = () => {
           resolve()
           return
         }
-        // console.log('getItem result', result)
+        console.log('getItem result', result)
         ctx.response.body = {
           "data": result
         }
