@@ -44,7 +44,7 @@ class Sider extends Component {
           </SubMenu>
         </SubMenu>
         <SubMenu key="sub4" title={<span><Icon type="setting" /><span>基本信息</span></span>}>
-          <Menu.Item key="9">Option 9</Menu.Item>
+          <Menu.Item key="teacher_tbl">老师信息表</Menu.Item>
           <Menu.Item key="10">Option 10</Menu.Item>
           <Menu.Item key="11">Option 11</Menu.Item>
           <Menu.Item key="12">Option 12</Menu.Item>

@@ -9,6 +9,7 @@ const mysql = require('mysql')
 const mysqlConfig = require('../mysqlConfig')
 const connection = mysql.createConnection(mysqlConfig)
 
+const TeacherTbl = require('./TeacherTbl.js')
 const Mooc = require('./Mooc.js')
 const Textbook = require('./Textbook.js')
 const TopTeacher = require('./TopTeacher.js')
@@ -22,8 +23,15 @@ const ExcellentCourse = require('./ExcellentCourse.js')
 const Major = require('./Major.js')
 const InstructStudentMatch = require('./InstructStudentMatch.js')
 const ClassTbl = require('./ClassTbl.js')
-
+// 公有表
+const publicTable = [
+  {
+    name: 'teacher_tbl',
+    idColumnName: 'job_id',
+  },
+]
 const columns = {
+  'teacher_tbl': TeacherTbl.columns,
   'mooc': Mooc.columns,
   'textbook': Textbook.columns,
   'top_teacher': TopTeacher.columns,
@@ -72,6 +80,11 @@ module.exports.getItem = () => {
     // console.log('page',page)
     await new Promise(resolve => {
       const selectColumns = ['id']
+      publicTable.forEach(item => {
+        if(ctx.params.table === item.name) {
+          selectColumns[0] = `${item.idColumnName} as id`
+        }
+      })
       let sourceTable = '', primaryKey = '', foreignKey = ''
       columns[ctx.params.table].forEach(item => {
         if(!item.editable) {
@@ -87,6 +100,7 @@ module.exports.getItem = () => {
           resolve()
           return
         }
+        // console.log('getItem result', result)
         ctx.response.body = {
           "data": result
         }
