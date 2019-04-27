@@ -386,16 +386,11 @@ connection.connect(err => {
         console.log('creating course_tbl', result)
         if (result.length === 0) {
             connection.query(`CREATE TABLE course_tbl (
-        id int(11) NOT NULL,
+        course_id int(11) NOT NULL,
         course_name text NOT NULL,
         course_type enum('理论课','课内实验','上机','其它') NOT NULL,
         course_nature enum('平台','必修','选修','通修','限选') NOT NULL,
-        specialityId int(11) DEFAULT NULL,
-        specialityName text,
-        plan_hours float DEFAULT NULL,
-        credit float DEFAULT NULL,
-        cardinal_num float DEFAULT NULL,
-        workload float DEFAULT NULL,
+        plan_hours float DEFAULT NULL
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created course_tbl table')
         }
@@ -408,10 +403,14 @@ connection.connect(err => {
             connection.query(`CREATE TABLE course_workload_tbl (
         id int(11) NOT NULL AUTO_INCREMENT,
         course_id int(11) NOT NULL,
-        class_id int(11) NOT NULL,
+        specialityId int(11) DEFAULT NULL,
+        specialityName text,
         teacher_id bigint(20) NOT NULL,
         student_num int(11) DEFAULT NULL,
         time datetime DEFAULT NULL,
+        credit float DEFAULT NULL,
+        cardinal_num float DEFAULT NULL,
+        workload float DEFAULT NULL,
         benefit_coefficient float DEFAULT NULL,
         calculation_basis text CHARACTER SET utf8 COLLATE utf8_general_ci,
         converted_hours float DEFAULT NULL,

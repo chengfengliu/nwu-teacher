@@ -8,12 +8,20 @@
         templateIndex: 0,
     },
     {
-        title: '上课班级id',
-        dataIndex: 'class_id',
+        title: '上课专业id',
+        dataIndex: 'specialityId',
         editable: true,
         notNull: false,
         type: 'int',
         templateIndex: 1,
+    },
+    {
+        title: '上课专业名称',
+        dataIndex: 'specialityName',
+        editable: true,
+        notNull: false,
+        type: 'char',
+        templateIndex: 2,
     },
     {
         title: '工号',
@@ -21,7 +29,7 @@
         editable: true,
         notNull: true,
         type: 'int',
-        templateIndex: 2,
+        templateIndex: 3,
     },
     {
         title: '上课人数',
@@ -29,7 +37,7 @@
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 3,
+        templateIndex: 4,
     },
     {
         title: '时间',
@@ -37,7 +45,31 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 4,
+        templateIndex: 5,
+    },
+    {
+        title: '学分',
+        dataIndex: 'credit',
+        editable: true,
+        notNull: false,
+        type: 'float',
+        templateIndex: 6,
+    },
+    {
+        title: '基数',
+        dataIndex: 'cardinal_num',
+        editable: true,
+        notNull: false,
+        type: 'float',
+        templateIndex: 7,
+    },
+    {
+        title: '工作量',
+        dataIndex: 'workload',
+        editable: true,
+        notNull: false,
+        type: 'float',
+        templateIndex: 8,
     },
     {
         title: '效益系数',
@@ -45,7 +77,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 5,
+        templateIndex: 9,
     },
     {
         title: '计算依据',
@@ -53,7 +85,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 6,
+        templateIndex: 10,
     },
     {
         title: '折合学时',
@@ -61,7 +93,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 7,
+        templateIndex: 11,
     },
     {
         title: '备注',
@@ -69,7 +101,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 8,
+        templateIndex: 12,
     },
 ]
 

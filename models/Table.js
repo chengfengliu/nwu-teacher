@@ -42,6 +42,10 @@ const publicTable = [
         name: 'internship_tbl', 
         idColumnName: 'internship_id',
     },
+    {
+        name: 'course_tbl',
+        idColumnName: 'course_id',
+    },
 ]
 
 const columns = {
@@ -365,7 +369,7 @@ module.exports.uploadItem = () => {
         // console.log('notNullIndexs', notNullIndexs,'intAndFloatIndexs',intAndFloatIndexs)
         workSheets[0].data.forEach(item => {
           // console.log('item',item)
-          console.log('item',item[0], typeof item[0],item[0].length,item[1], typeof item[1],item[1].length,item[2],typeof item[2],item[3], typeof item[3],item[4], typeof item[4],item[5], typeof item[5],item[6], typeof item[6],item[7], typeof item[7],item[8], typeof item[8],item[9], typeof item[9],item[10], typeof item[10],notNullIndexs.every(index => item[index]))
+          console.log('item',item[0], typeof item[0],0,item[1], typeof item[1],0,item[2],typeof item[2],item[3], typeof item[3],item[4], typeof item[4],item[5], typeof item[5],item[6], typeof item[6],item[7], typeof item[7],item[8], typeof item[8],item[9], typeof item[9],item[10], typeof item[10],notNullIndexs.every(index => item[index]))
           if(item.length !== 0 && !notNullIndexs.every(index => item[index])) {
             requiredFieldNull = true
             throw new Error('requiredFieldNull')

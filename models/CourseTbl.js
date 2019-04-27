@@ -1,7 +1,7 @@
 ﻿module.exports.columns = [
     {
         title: '课程id',
-        dataIndex: 'id',
+        dataIndex: 'course_id',
         editable: true,
         notNull: true,
         type: 'int',
@@ -32,52 +32,12 @@
         templateIndex: 3,
     },
     {
-        title: '授课专业id',
-        dataIndex: 'specialityId',
-        editable: true,
-        notNull: false,
-        type: 'int',
-        templateIndex: 4,
-    },
-    {
-        title: '授课专业名称',
-        dataIndex: 'specialityName',
-        editable: true,
-        notNull: false,
-        type: 'char',
-        templateIndex: 5,
-    },
-    {
         title: '计划学时',
         dataIndex: 'plan_hours',
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 6,
-    },
-    {
-        title: '学分',
-        dataIndex: 'credit',
-        editable: true,
-        notNull: false,
-        type: 'float',
-        templateIndex: 7,
-    },
-    {
-        title: '基数',
-        dataIndex: 'cardinal_num',
-        editable: true,
-        notNull: false,
-        type: 'float',
-        templateIndex: 8,
-    },
-    {
-        title: '工作量',
-        dataIndex: 'workload',
-        editable: true,
-        notNull: false,
-        type: 'float',
-        templateIndex: 9,
+        templateIndex: 4,
     },
 ]
 
