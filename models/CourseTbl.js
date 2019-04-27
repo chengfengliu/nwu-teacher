@@ -33,11 +33,19 @@
     },
     {
         title: '授课专业id',
-        dataIndex: 'speciality',
+        dataIndex: 'specialityId',
         editable: true,
         notNull: false,
         type: 'int',
         templateIndex: 4,
+    },
+    {
+        title: '授课专业名称',
+        dataIndex: 'specialityName',
+        editable: true,
+        notNull: false,
+        type: 'char',
+        templateIndex: 5,
     },
     {
         title: '计划学时',
@@ -45,7 +53,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 5,
+        templateIndex: 6,
     },
     {
         title: '学分',
@@ -53,7 +61,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 6,
+        templateIndex: 7,
     },
     {
         title: '基数',
@@ -61,7 +69,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 7,
+        templateIndex: 8,
     },
     {
         title: '工作量',
@@ -69,7 +77,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 8,
+        templateIndex: 9,
     },
 ]
 
