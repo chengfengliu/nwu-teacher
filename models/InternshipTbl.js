@@ -36,15 +36,15 @@
         dataIndex: 'internship_position',
         editable: true,
         notNull: true,
-        type: 'float',
+        type: 'char',
         templateIndex: 4,
     },
     {
-        title: '实习基地id',
-        dataIndex: 'internship_base',
+        title: '实习基地名称',
+        dataIndex: 'internship_base_name',
         editable: true,
         notNull: true,
-        type: 'int',
+        type: 'char',
         templateIndex: 5,
     },
     {
@@ -60,7 +60,7 @@
         dataIndex: 'plan_hours',
         editable: true,
         notNull: false,
-        type: 'float',
+        type: 'char',
         templateIndex: 7,
     },
     {
