@@ -18,29 +18,21 @@
     {
         title: '姓名',
         dataIndex: 'teacher_name',
-        editable: true,
-        notNull: false,
-        type: 'char',
-        templateIndex: 2,
-    },
-    {
-        title: '实习对象',
-        dataIndex: 'internship_target',
         editable: false,
         notNull: false,
         type: 'char',
-        templateIndex: 3,
-        sourceTable: 'internship_tbl',
-        primaryKey: 'internship_id',
-        foreignKey: 'internship_id',
+        templateIndex: 2,
+        sourceTable: 'teacher_tbl',
+        primaryKey: 'teacher_id',
+        foreignKey: 'job_id',
     },
     {
-        title: '实习时间',
+        title: '起始时间',
         dataIndex: 'time',
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 4,
+        templateIndex: 3,
     },
     {
         title: '实习天数',
@@ -48,7 +40,7 @@
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 5,
+        templateIndex: 4,
     },
     {
         title: '人数',
@@ -56,7 +48,7 @@
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 6,
+        templateIndex: 5,
     },
     {
         title: '效益系数',
@@ -64,7 +56,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 7,
+        templateIndex: 6,
     },
     {
         title: '计算依据',
@@ -72,7 +64,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 8,
+        templateIndex: 7,
     },
     {
         title: '折合学时',
@@ -80,7 +72,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 9,
+        templateIndex: 8,
     },
     {
         title: '备注',
@@ -88,7 +80,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 10,
+        templateIndex: 9,
     },
 ]
 

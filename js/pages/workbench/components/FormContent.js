@@ -348,7 +348,7 @@ class Content extends Component {
   }
 
   deleteSelectedRows() {
-    console.log('deleteSelectedRows',this.state.selectedRowKeys)
+    // console.log('deleteSelectedRows',this.state.selectedRowKeys)
     message.loading('正在删除中', 0)
     const that = this
     $.ajax({
@@ -400,10 +400,10 @@ class Content extends Component {
       name: 'file',
       action: `/api/${this.state.table}/uploadItem`,
       onChange (info) {
-        console.log('info',info.file.status,info)
+        // console.log('info',info.file.status,info)
         if (info.file.status !== 'uploading') {
-          // console.log(info.file, info.fileList)
-        }
+           //console.log(info.file, info.fileList)
+          }
         if (info.file.status === 'done' && info.file.response.success) {
           message.success(`${info.file.name} 文件上传成功`)
           that.setState({

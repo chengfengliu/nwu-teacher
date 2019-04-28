@@ -72,12 +72,23 @@
         templateIndex: 8,
     },
     {
+        title: '指导老师姓名',
+        dataIndex: 'teacher_name',
+        editable: false,
+        notNull: false,
+        type: 'char',
+        templateIndex: 9,
+        sourceTable: 'teacher_tbl',
+        primaryKey: 'teacher_id',
+        foreignKey: 'job_id',
+    },
+    {
         title: '企业指导老师编号',
         dataIndex: 'corporate_mentor_id',
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 9,
+        templateIndex: 10,
     },
     {
         title: '备注',
@@ -85,7 +96,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 10,
+        templateIndex: 11,
     },
 ]
 
