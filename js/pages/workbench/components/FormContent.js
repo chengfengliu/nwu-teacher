@@ -402,8 +402,8 @@ class Content extends Component {
       onChange (info) {
         console.log('info',info.file.status,info)
         if (info.file.status !== 'uploading') {
-          // console.log(info.file, info.fileList)
-        }
+           //console.log(info.file, info.fileList)
+          }
         if (info.file.status === 'done' && info.file.response.success) {
           message.success(`${info.file.name} 文件上传成功`)
           that.setState({

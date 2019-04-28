@@ -8,12 +8,23 @@
         templateIndex: 0,
     },
     {
+        title: '姓名',
+        dataIndex: 'teacher_name',
+        editable: false,
+        notNull: true,
+        type: 'char',
+        templateIndex: 1,
+        sourceTable: 'teacher_tbl',
+        primaryKey: 'teacher_id',
+        foreignKey: 'job_id',
+    },
+    {
         title: '职务名',
         dataIndex: 'job_name',
         editable: true,
         notNull: true,
         type: 'char',
-        templateIndex: 1,
+        templateIndex: 2,
     },
     {
         title: '时间',
@@ -21,7 +32,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 2,
+        templateIndex: 3,
     },
     {
         title: '折合学时',
@@ -29,7 +40,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 3,
+        templateIndex: 4,
     },
     {
         title: '备注',
@@ -37,7 +48,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 4,
+        templateIndex: 5,
     },
 ]
 

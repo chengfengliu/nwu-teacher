@@ -32,12 +32,23 @@
         templateIndex: 3,
     },
     {
+        title: '姓名',
+        dataIndex: 'teacher_name',
+        editable: false,
+        notNull: false,
+        type: 'char',
+        templateIndex: 4,
+        sourceTable: 'teacher_tbl',
+        primaryKey: 'teacher_id',
+        foreignKey: 'job_id',
+    },
+    {
         title: '上课人数',
         dataIndex: 'student_num',
         editable: true,
         notNull: false,
         type: 'int',
-        templateIndex: 4,
+        templateIndex: 5,
     },
     {
         title: '时间',
@@ -45,7 +56,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 5,
+        templateIndex: 6,
     },
     {
         title: '学分',
@@ -53,7 +64,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 6,
+        templateIndex: 7,
     },
     {
         title: '基数',
@@ -61,7 +72,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 7,
+        templateIndex: 8,
     },
     {
         title: '工作量',
@@ -69,7 +80,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 8,
+        templateIndex: 9,
     },
     {
         title: '效益系数',
@@ -77,7 +88,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 9,
+        templateIndex: 10,
     },
     {
         title: '计算依据',
@@ -85,7 +96,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 10,
+        templateIndex: 11,
     },
     {
         title: '折合学时',
@@ -93,7 +104,7 @@
         editable: true,
         notNull: false,
         type: 'float',
-        templateIndex: 11,
+        templateIndex: 12,
     },
     {
         title: '备注',
@@ -101,7 +112,7 @@
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 12,
+        templateIndex: 13,
     },
 ]
 

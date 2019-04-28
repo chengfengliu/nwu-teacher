@@ -36,7 +36,7 @@
         dataIndex: 'plan_hours',
         editable: true,
         notNull: false,
-        type: 'float',
+        type: 'char',
         templateIndex: 4,
     },
 ]

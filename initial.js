@@ -345,23 +345,6 @@ connection.connect(err => {
             console.log('created major table')
         }
     })
-    //班级
-    connection.query(`select t.table_name from information_schema.TABLES t where t.TABLE_SCHEMA = "${mysqlConfig.database}" and t.TABLE_NAME ="class_tbl";`, (err, result) => {
-        if (err) throw err
-        console.log('creating class_tbl', result)
-        if (result.length === 0) {
-            connection.query(`CREATE TABLE class_tbl (
-        id int(11) NOT NULL AUTO_INCREMENT,
-        grade text NOT NULL,
-        college text NOT NULL,
-        major text NOT NULL,
-        class_num int(11) DEFAULT NULL,
-        student_num int(11) DEFAULT NULL,
-        PRIMARY KEY (id)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
-            console.log('created class_tbl table')
-        }
-    })
     //企业导师
     connection.query(`select t.table_name from information_schema.TABLES t where t.TABLE_SCHEMA = "${mysqlConfig.database}" and t.TABLE_NAME ="corporate_mentor_tbl";`, (err, result) => {
         if (err) throw err
@@ -390,7 +373,7 @@ connection.connect(err => {
         course_name text NOT NULL,
         course_type enum('理论课','课内实验','上机','其它') NOT NULL,
         course_nature enum('平台','必修','选修','通修','限选') NOT NULL,
-        plan_hours float DEFAULT NULL
+        plan_hours text
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created course_tbl table')
         }
@@ -484,9 +467,9 @@ connection.connect(err => {
         internship_type enum('讲座','实训','上机') NOT NULL,
         internship_nature enum('平台','必修','选修') NOT NULL,
         internship_position enum('校内','校外') NOT NULL,
-        internship_base int(11) NOT NULL,
+        internship_base_name text,
         internship_target text,
-        plan_hours float DEFAULT NULL,
+        plan_hours text,
         credit float DEFAULT NULL,
         cardinal_num float DEFAULT NULL,
         workload float DEFAULT NULL,
@@ -505,7 +488,6 @@ connection.connect(err => {
         id int(11) NOT NULL AUTO_INCREMENT,
         internship_id int(11) NOT NULL,
         teacher_id bigint(20) NOT NULL,
-        teacher_name text,
         time text,
         length int(11) DEFAULT NULL,
         student_num int(11) DEFAULT NULL,
