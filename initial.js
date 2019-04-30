@@ -392,11 +392,7 @@ connection.connect(err => {
         student_num int(11) DEFAULT NULL,
         time datetime DEFAULT NULL,
         credit float DEFAULT NULL,
-        cardinal_num float DEFAULT NULL,
-        workload float DEFAULT NULL,
         benefit_coefficient float DEFAULT NULL,
-        calculation_basis text CHARACTER SET utf8 COLLATE utf8_general_ci,
-        converted_hours float DEFAULT NULL,
         remark text,
         PRIMARY KEY (id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
