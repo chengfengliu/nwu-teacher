@@ -32,12 +32,20 @@
         templateIndex: 3,
     },
     {
+        title: '基数',
+        dataIndex: 'cardinal_num',
+        editable: true,
+        notNull: true,
+        type: 'float',
+        templateIndex: 4,
+    },
+    {
         title: '计划学时',
         dataIndex: 'plan_hours',
         editable: true,
         notNull: false,
         type: 'char',
-        templateIndex: 4,
+        templateIndex: 5,
     },
 ]
 

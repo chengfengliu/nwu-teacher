@@ -373,6 +373,7 @@ connection.connect(err => {
         course_name text NOT NULL,
         course_type enum('理论课','课内实验','上机','其它') NOT NULL,
         course_nature enum('平台','必修','选修','通修','限选') NOT NULL,
+        cardinal_num float DEFAULT NULL,
         plan_hours text
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;`)
             console.log('created course_tbl table')
