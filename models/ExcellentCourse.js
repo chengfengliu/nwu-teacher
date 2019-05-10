@@ -31,12 +31,12 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 3,
     sourceTable: 'teacher_tbl',
-    primaryKey: 'director_job_id',
+    primaryKey: 'job_id',
     foreignKey: 'job_id',
   },
   {
     title: '主持人工号',
-    dataIndex: 'director_job_id',
+    dataIndex: 'job_id',
     editable: true,
     notNull: true,
     type: 'int',
@@ -58,32 +58,19 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 6,
   },
-  {
-    title: '绩效计分',
-    dataIndex: 'performance_scroe',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 7,
-  },
-  {
-    title: '奖金',
-    dataIndex: 'bonus',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 8,
-  },
-  {
-    title: '工作量',
-    dataIndex: 'workload',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 9,
-  }, 
 ]
 
+module.exports.rules = {
+  tableType: '精品课程',
+  itemColumnName: 'course_name',
+  ruleColumnName: 'course_level',
+  columns: [
+    {title: "课程等级", dataIndex: "course_level", editable: true},
+    {title: "工作量", dataIndex: "workload", editable: true},
+    {title: "绩效", dataIndex: "performance_score", editable: true},
+    {title: "奖金", dataIndex: "bonus", editable: true},
+  ]
+}
 // mock语句
 // insert into textbook(textbook_type,textbook_name,textbook_publisher,director_job_id,member,publish_time,is_excellent,remark,performance_scroe,bonus,workload) values('国家级','数据结构','西北大学出版社',20130069,'cf','2019/01/01','是','无备注',1,1,1);
 

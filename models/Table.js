@@ -1,10 +1,9 @@
-/// <reference path="../js/pages/workbench/components/Sider.js" />
 const xlsx = require('node-xlsx')
 const send = require('koa-send')
 
 const path = require('path')
 const fs = require('fs')
-
+const XLSX = require('xlsx')
 // 连接MySQL数据库
 const mysql = require('mysql')
 const mysqlConfig = require('../mysqlConfig')
@@ -69,6 +68,21 @@ const columns = {
   'internship_tbl': InternshipTbl.columns,
   'internship_workload_tbl': InternshipWorkloadTbl.columns,
 }
+const rulesList = {
+  'mooc': Mooc.rules,
+  'instruct_student_innovate': InstructStudentInnovate.rules,
+  'teach_reformation': TeachReformation.rules,
+  'teach_model_center': TeachModelCenter.rules,
+  'teach_team': TeachTeam.rules,
+  'major': Major.rules,
+  'textbook': Textbook.rules,
+  'course_workload_tbl': CourseWorkloadTbl.rules,
+  'instruct_student_match': InstructStudentMatch.rules,
+  'top_teacher': TopTeacher.rules,
+  'teach_award': TeachAward.rules,
+  'excellent_course': ExcellentCourse.rules,
+  'extra_job_workload_tbl': ExtraJobWorkloadTbl.rules,
+}
 
 module.exports.getPageCountAndColumns = () => {
   return async(ctx, next) => {
@@ -102,24 +116,32 @@ module.exports.getItem = () => {
     page = parseInt(page) === 0 ? 1 : page
     // console.log('page',page)
     await new Promise(resolve => {
-      const selectColumns = ['id']
+      const selectColumns = [`${ctx.params.table}.id`]
       publicTable.forEach(item => {
         if(ctx.params.table === item.name) {
+          // 如果是公共表，其id列要改名为id，如teacher_tbl的job_id改为id，因为前端需要接收id作为每一个记录行key
           selectColumns[0] = `${item.idColumnName} as id`
         }
       })
-      let sourceTable = '', primaryKey = '', foreignKey = ''
+      let sourceTable = '', whereString = ''
       columns[ctx.params.table].forEach(item => {
         if(!item.editable) {
-          sourceTable = item.sourceTable
-          primaryKey = item.primaryKey
-          foreignKey = item.foreignKey
+          if(sourceTable.indexOf(item.sourceTable) == -1) {
+            // 避免重复添加同一外表
+            sourceTable = sourceTable.concat(`,${item.sourceTable}`)
+          }
+          if(whereString === '') {
+            whereString = whereString.concat(`${ctx.params.table}.${item.primaryKey}=${item.sourceTable}.${item.foreignKey}`)
+          } else {
+            whereString = whereString.concat(` AND ${ctx.params.table}.${item.primaryKey}=${item.sourceTable}.${item.foreignKey}`)
+          }
           selectColumns.push(`${item.sourceTable}.${item.dataIndex}`)
         } else {
           selectColumns.push(`${ctx.params.table}.${item.dataIndex}`)
         }
       })
-      connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `,${sourceTable} WHERE ${ctx.params.table}.${primaryKey}=${sourceTable}.${foreignKey}`} LIMIT ${(page - 1) * 10}, 10;`, (err, result) => {
+      // console.log('selectColumns',selectColumns,'sourceTable',sourceTable,'whereString',whereString)
+      connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `${sourceTable} WHERE ${whereString}`} LIMIT ${(page - 1) * 10}, 10;`, (err, result) => {
         if(err) {
           console.log(err)
           resolve()
@@ -135,18 +157,6 @@ module.exports.getItem = () => {
     await next()
   }
 }
-
-// module.exports.getColumns = () => {
-//   return async(ctx, next) => {
-//     await new Promise(resolve => {
-//       ctx.response.body = {
-//         columns: columns[ctx.params.table],
-//       }
-//       resolve()
-//     })
-//     await next()
-//   }
-// }
 
 module.exports.addItem = () => {
   return async(ctx, next) => {
@@ -393,7 +403,7 @@ module.exports.uploadItem = () => {
         if(item.length === 0) {
           return
         }
-        console.log('item',item)
+        // console.log('item',item)
         const selectColumns = []
         const columnsValue = []
         columns[ctx.params.table].forEach(column => {
@@ -542,6 +552,260 @@ module.exports.deleteSelectedRows = () => {
           }
         })
     })
+    await next()
+  }
+}
+
+module.exports.computeAndDownload = () => {
+  return async(ctx, next) => {
+    const {rules} = ctx.request.body
+    const ruleColumnName = rulesList[ctx.params.table].ruleColumnName
+    console.log('computeAndDownload',rules,ruleColumnName)
+    await new Promise(resolve => {
+      const rulesObject = {}
+      // 匹配汉字的正则表达式
+      const ChineseCharacters = /[\u4e00-\u9fa5]+/g;
+      const ChineseCharactersObject = {}
+      rules.forEach(item => {
+        const rulesObjectItem = []
+        // 由规则里出现的中文列名组成的数组，没有中文就是null
+        const workloadResult = item.workload.match(ChineseCharacters)
+        const performanceScoreResult = item.performance_score.match(ChineseCharacters)
+        const bonusResult = item.bonus.match(ChineseCharacters)
+
+        if(workloadResult) {
+          // 工作量含有变量（中文）
+          workloadResult.forEach((item2, index) => {
+            // console.log(item.workload,workloadResult[index],rulesList[ctx.params.table].Chinese2English[item2])
+            // 把中文换成英文
+            item.workload = item.workload.replace(workloadResult[index], rulesList[ctx.params.table].Chinese2English[item2])
+            workloadResult[index] = rulesList[ctx.params.table].Chinese2English[item2]
+          })
+        }
+        // 全部换为英文后
+        rulesObjectItem.push(item.workload)
+
+        if(performanceScoreResult) {
+          performanceScoreResult.forEach((item2, index) => {
+            item.performance_score = item.performance_score.replace(performanceScoreResult[index], rulesList[ctx.params.table].Chinese2English[item2])
+            performanceScoreResult[index] = rulesList[ctx.params.table].Chinese2English[item2]
+          })
+        }
+        rulesObjectItem.push(item.performance_score)
+
+        if(bonusResult) {
+          bonusResult.forEach((item2, index) => {
+            item.bonus = item.bonus.replace(bonusResult[index], rulesList[ctx.params.table].Chinese2English[item2])
+            bonusResult[index] = rulesList[ctx.params.table].Chinese2English[item2]
+          })
+        } 
+        rulesObjectItem.push(item.bonus)
+        
+        rulesObject[item[ruleColumnName]] = rulesObjectItem
+        ChineseCharactersObject[item[ruleColumnName]] = [workloadResult, performanceScoreResult, bonusResult]
+      })
+      console.log('\nrulesObject\n',rulesObject,'\nChineseCharactersObject\n',ChineseCharactersObject)
+    //   rulesObject
+    //   { '课堂理论课':
+    //     [ 
+    //       '(credit*20)*[1+(student_num/50-1)*0.3]*benefit_coefficient',
+    //       '',
+    //       '' 
+    //     ] 
+    //   }
+    //  ChineseCharactersObject
+    //   { '课堂理论课':
+    //     [ 
+    //       [ 'credit', 'student_num', 'benefit_coefficient' ],
+    //       null,
+    //       null 
+    //     ] 
+    //   }
+      const selectColumns = [`${ctx.params.table}.id`]
+      const data = []
+      let tableHead = []
+
+      let sourceTable = '', whereString = ''
+      columns[ctx.params.table].forEach(item => {
+        if(!item.editable) {
+          if(sourceTable.indexOf(item.sourceTable) == -1) {
+            // 避免重复添加同一外表
+            sourceTable = sourceTable.concat(`,${item.sourceTable}`)
+          }
+          if(whereString === '') {
+            whereString = whereString.concat(`${ctx.params.table}.${item.primaryKey}=${item.sourceTable}.${item.foreignKey}`)
+          } else {
+            whereString = whereString.concat(` AND ${ctx.params.table}.${item.primaryKey}=${item.sourceTable}.${item.foreignKey}`)
+          }
+          selectColumns.push(`${item.sourceTable}.${item.dataIndex}`)
+        } else {
+          selectColumns.push(`${ctx.params.table}.${item.dataIndex}`)
+        }
+        tableHead.push(item.title) // 表头
+      })
+      tableHead = tableHead.concat(['工作量', '绩效', '奖金'])
+      console.log('tableHead',tableHead,'selectColumns',selectColumns)
+      // console.log('selectColumns',selectColumns,'sourceTable',sourceTable,'whereString',whereString)
+      
+      connection.query(`SELECT ${selectColumns.join(',')} FROM ${ctx.params.table}${sourceTable === '' ? '' : `${sourceTable} WHERE ${whereString}`};`, (err, result) => {
+        if(err) {
+          console.log(err)
+          resolve()
+          return
+        }
+        if(result.length !== 0) {
+          // console.log('success', result)
+          result.forEach(async(item, index) => {
+            // console.log('item',item,index)
+            data[index] = []
+            const keys = Object.keys(item)
+            // 深拷贝，不能用Object.assign
+            const newRulesObject = JSON.parse(JSON.stringify(rulesObject))
+            // console.log('newRulesObject',newRulesObject,'rulesObject',rulesObject)
+            for (let i = 0; i < keys.length; i++) {
+              // console.log(keys[i],ChineseCharactersObject,item[ruleColumnName])
+              // console.log(keys[i],ChineseCharactersObject[item[ruleColumnName]].workload,ChineseCharactersObject[item[ruleColumnName]].workload.indexOf(keys[i]))
+              if(keys[i] === 'id') {
+                continue
+              }
+              if(ChineseCharactersObject[item[ruleColumnName]]) {
+                if(ChineseCharactersObject[item[ruleColumnName]][0] && ChineseCharactersObject[item[ruleColumnName]][0].indexOf(keys[i]) !== -1) {
+                  // console.log('keys[i]',keys[i],item[keys[i]])
+                  // 0-workload
+                  // console.log('before:',newRulesObject[item[ruleColumnName]])
+                  // 英文列名替换为数字
+                  newRulesObject[item[ruleColumnName]][0] = newRulesObject[item[ruleColumnName]][0].replace(keys[i], item[keys[i]])
+                  // console.log('after:',newRulesObject[item[ruleColumnName]])
+                }
+                if(ChineseCharactersObject[item[ruleColumnName]][1] && ChineseCharactersObject[item[ruleColumnName]][1].indexOf(keys[i]) !== -1) {
+                  // 1-performance_score
+                  newRulesObject[item[ruleColumnName]][1] = newRulesObject[item[ruleColumnName]][1].replace(keys[i], item[keys[i]])
+                }
+                if(ChineseCharactersObject[item[ruleColumnName]][2] && ChineseCharactersObject[item[ruleColumnName]][2].indexOf(keys[i]) !== -1) {
+                  // 2-bonus
+                  newRulesObject[item[ruleColumnName]][2] = newRulesObject[item[ruleColumnName]][2].replace(keys[i], item[keys[i]])
+                }
+              }   
+              // 自身数据
+              data[index].push(item[keys[i]])
+            }
+            if(newRulesObject[item[ruleColumnName]]) {
+              newRulesObject[item[ruleColumnName]][0] = eval(newRulesObject[item[ruleColumnName]][0]) ? eval(newRulesObject[item[ruleColumnName]][0]) : 0
+              newRulesObject[item[ruleColumnName]][1] = eval(newRulesObject[item[ruleColumnName]][1]) ? eval(newRulesObject[item[ruleColumnName]][1]) : 0
+              newRulesObject[item[ruleColumnName]][2] = eval(newRulesObject[item[ruleColumnName]][2]) ? eval(newRulesObject[item[ruleColumnName]][2]) : 0
+            }
+            
+            // 连接计算出的工作量、绩效、奖金
+            data[index] = data[index].concat(newRulesObject[item[ruleColumnName]])
+            await new Promise(resolve => {
+              // 修改数据库数据中的工作量、绩效、奖金
+              connection.query(`UPDATE ${ctx.params.table} SET workload=${newRulesObject[item[ruleColumnName]][0]},performance_score=${newRulesObject[item[ruleColumnName]][1]},bonus=${newRulesObject[item[ruleColumnName]][2]} WHERE ${ctx.params.table}.id=${item['id']};`, (err, result) => {
+                if(err) {
+                  console.log(err)
+                  resolve()
+                  return
+                }
+                resolve()
+              })
+            })
+            
+          })
+          // 插入表头
+          data.unshift(tableHead)
+          // console.log('data',data)
+          const buffer = xlsx.build([{name: "sheet1", data}])
+          // 将二进制转化为数组，传到前端
+          const wbout = XLSX.read(buffer,{type:'buffer'})
+          ctx.response.body = wbout
+          resolve()
+        }
+      })
+    })
+    await next()
+  }
+}
+
+module.exports.getRules = () => {
+  return async(ctx, next) => {
+    ctx.response.body = rulesList[ctx.params.table].columns
+    await next()
+  }
+}
+
+module.exports.generate = () => {
+  return async(ctx, next) => {
+    console.log(ctx.request.body)
+    const {job_id} = ctx.request.body
+    // data存放表格数据
+    const data = []
+    let index = 1
+    let workloadTotal = 0, performanceScoreTotal = 0, bonusTotal = 0
+    const tableHead = ['类别', '名称', '级别', '工作量', '绩效', '奖金']
+    data[0] = tableHead
+    for(const tableName in rulesList) {
+      console.log('tableName ',tableName)
+      // 遍历每个表
+      const tableType = rulesList[tableName].tableType
+      const selectColumns = []
+      let sourceTable = '', whereString = ''
+      if(rulesList[tableName].editable === false) {
+        // 需要外表
+        sourceTable = sourceTable.concat(`,${rulesList[tableName].sourceTable}`)
+        whereString = whereString.concat(`${tableName}.${rulesList[tableName].primaryKey}=${rulesList[tableName].sourceTable}.${rulesList[tableName].foreignKey}`)
+        selectColumns.push(`${rulesList[tableName].sourceTable}.${rulesList[tableName].itemColumnName}`)
+        selectColumns.push(`${rulesList[tableName].sourceTable}.${rulesList[tableName].ruleColumnName}`)
+      } else {
+        if(rulesList[tableName].itemColumnName === '') {
+          selectColumns.push(`''`)
+        } else {
+          selectColumns.push(`${tableName}.${rulesList[tableName].itemColumnName}`)
+        }
+        selectColumns.push(`${tableName}.${rulesList[tableName].ruleColumnName}`)
+      }
+      
+      selectColumns.push(`${tableName}.workload`)
+      selectColumns.push(`${tableName}.performance_score`)
+      selectColumns.push(`${tableName}.bonus`)
+      if(whereString === '') {
+        whereString = whereString.concat(`${tableName}.job_id=${job_id}`)
+      } else {
+        whereString = whereString.concat(` AND ${tableName}.job_id=${job_id}`)
+      }
+      console.log('whereString',whereString,'selectColumns',selectColumns)
+      await new Promise(resolve => {
+        connection.query(`SELECT ${selectColumns.join(',')} FROM ${tableName}${sourceTable === '' ? '' : sourceTable} WHERE ${whereString};`, (err, result) => {
+          if(err) {
+            console.log(err)
+            resolve()
+            return
+          }
+          if(result.length !== 0) {
+            // console.log('success', result)
+            result.forEach(item => {
+              // console.log('item',item,index)
+              data[index] = [tableType]
+              var keys = Object.keys(item)
+              for (let i = 0; i < keys.length; i++) {
+                // 自身数据
+                data[index].push(item[keys[i]])
+              }
+              workloadTotal += item.workload
+              performanceScoreTotal += item.performance_score
+              bonusTotal += item.bonus
+              index++
+            })
+          }
+          resolve()
+        })
+        console.log('after search')
+      })
+    }
+    // console.log('data',data)
+    data[index] = ['汇总', '', '', workloadTotal, performanceScoreTotal, bonusTotal]
+    const buffer = xlsx.build([{name: "sheet1", data}])
+    // 将二进制转化为数组，传到前端
+    const wbout = XLSX.read(buffer,{type:'buffer'})
+    ctx.response.body = wbout
     await next()
   }
 }

@@ -9,7 +9,7 @@
     },
     {
         title: '工号',
-        dataIndex: 'teacher_id',
+        dataIndex: 'job_id',
         editable: true,
         notNull: true,
         type: 'int',
@@ -23,7 +23,7 @@
         type: 'char',
         templateIndex: 2,
         sourceTable: 'teacher_tbl',
-        primaryKey: 'teacher_id',
+        primaryKey: 'job_id',
         foreignKey: 'job_id',
     },
     {

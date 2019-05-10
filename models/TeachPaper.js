@@ -23,12 +23,12 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 2,
     sourceTable: 'teacher_tbl',
-    primaryKey: 'chief_editor_id',
+    primaryKey: 'job_id',
     foreignKey: 'job_id',
   },
   {
     title: '第一作者工号',
-    dataIndex: 'chief_editor_id',
+    dataIndex: 'job_id',
     editable: true,
     notNull: true,
     type: 'int',
@@ -67,30 +67,6 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 7,
   },
-  {
-    title: '绩效计分',
-    dataIndex: 'performance_scroe',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 8,
-  },
-  {
-    title: '奖金',
-    dataIndex: 'bonus',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 9,
-  },
-  {
-    title: '工作量',
-    dataIndex: 'workload',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 10,
-  }, 
 ]
 
 // mock语句

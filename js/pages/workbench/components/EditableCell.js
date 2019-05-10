@@ -16,10 +16,11 @@ class EditableCell extends Component {
       title,
       record,
       index,
+      notNullColumns,
       ...restProps
     } = this.props
-    const notRequiredColum = ['member', 'remark', 'performance_scroe', 'bonus', 'workload']
-    // console.log('this.props',dataIndex,editing,record? record[dataIndex]: null)
+    const notRequiredColum = notNullColumns
+    // console.log('this.props dataIndex',dataIndex, notRequiredColum)
     return (
       <EditableContext.Consumer>
         {(form) => {
@@ -30,7 +31,7 @@ class EditableCell extends Component {
                 <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
                     rules: [{
-                      required: notRequiredColum.indexOf(dataIndex) === -1,
+                      required: notRequiredColum.indexOf(dataIndex) !== -1,
                       message: `必填`,
                     }],
                     initialValue: record[dataIndex],

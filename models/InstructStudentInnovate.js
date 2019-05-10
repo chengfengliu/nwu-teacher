@@ -183,12 +183,12 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 22,
     sourceTable: 'teacher_tbl',
-    primaryKey: 'mentor_job_id',
+    primaryKey: 'job_id',
     foreignKey: 'job_id',
   },
   {
     title: '指导教师工号',
-    dataIndex: 'mentor_job_id',
+    dataIndex: 'job_id',
     editable: true,
     notNull: true,
     type: 'int',
@@ -202,28 +202,16 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 24,
   },
-  {
-    title: '绩效计分',
-    dataIndex: 'performance_scroe',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 25,
-  },
-  {
-    title: '奖金',
-    dataIndex: 'bonus',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 26,
-  },
-  {
-    title: '工作量',
-    dataIndex: 'workload',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 27,
-  }, 
 ]
+
+module.exports.rules = {
+  tableType: '大创',
+  itemColumnName: 'project_name',
+  ruleColumnName: 'project_level',
+  columns: [
+    {title: "项目级别", dataIndex: "project_level", editable: true},
+    {title: "工作量", dataIndex: "workload", editable: true},
+    {title: "绩效", dataIndex: "performance_score", editable: true},
+    {title: "奖金", dataIndex: "bonus", editable: true},
+  ]
+}

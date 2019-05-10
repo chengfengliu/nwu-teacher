@@ -151,12 +151,12 @@ module.exports.columns = [
   //   type: 'char',
   //   templateIndex: 18,
   //   sourceTable: 'teacher_tbl',
-  //   primaryKey: 'mentor_job_id',
+  //   primaryKey: 'job_id',
   //   foreignKey: 'job_id',
   // },
   {
     title: '指导教师工号',
-    dataIndex: 'mentor_job_id',
+    dataIndex: 'job_id',
     editable: true,
     notNull: false,
     type: 'int',
@@ -170,28 +170,19 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 20,
   },
-  {
-    title: '绩效计分',
-    dataIndex: 'performance_scroe',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 21,
-  },
-  {
-    title: '奖金',
-    dataIndex: 'bonus',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 22,
-  },
-  {
-    title: '工作量',
-    dataIndex: 'workload',
-    editable: true,
-    notNull: false,
-    type: 'float',
-    templateIndex: 23,
-  }, 
 ]
+
+module.exports.rules = {
+  tableType: '竞赛',
+  itemColumnName: 'match_name',
+  ruleColumnName: 'match_level',
+  columns: [
+    {title: "竞赛级别", dataIndex: "match_level", editable: true},
+    {title: "工作量", dataIndex: "workload", editable: true},
+    {title: "绩效", dataIndex: "performance_score", editable: true},
+    {title: "奖金", dataIndex: "bonus", editable: true},
+  ],
+  Chinese2English: {
+    '备注': 'remark',
+  }
+}

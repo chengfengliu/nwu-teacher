@@ -19,6 +19,7 @@ router.get('/api/rollback', Table.rollback())
 router.post('/api/findUser', User.findUser())
 router.post('/api/modifyPassword', User.modifyPassword())
 router.post('/api/addAssistant', User.addAssistant())
+router.post('/api/generate', Table.generate())
 
 router.post('/api/:table/getItem', Table.getItem())
 router.post('/api/:table/addItem', Table.addItem())
@@ -28,5 +29,7 @@ router.post('/api/:table/uploadItem', upload.single('file'), Table.uploadItem())
 router.get('/api/:table/downloadItem', Table.downloadItem())
 router.get('/api/:table/downloadTemplate', Table.downloadTemplate())
 router.post('/api/:table/deleteSelectedRows', Table.deleteSelectedRows())
+router.post('/api/:table/computeAndDownload', Table.computeAndDownload())
+router.get('/api/:table/getRules', Table.getRules())
 
 module.exports = router

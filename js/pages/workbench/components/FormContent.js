@@ -4,6 +4,7 @@ import '../../../../css/content.css'
 import '../../../../css/formContent.css'
 import EditableCell from './EditableCell.js'
 import EditableContext from './Context.js'
+import RulesTable from './RulesTable.js'
 import { Pagination, Table, Popconfirm, Form, notification, Button, Icon, message, Upload } from 'antd'
 
 class Content extends Component { 
@@ -21,8 +22,9 @@ class Content extends Component {
       selectedRowKeys: [], // 正在选择的行
     }
   }
+
   componentWillReceiveProps(nextProps) {
-    // console.log('componentWillReceiveProps',nextProps.table,this.state.page)
+    // console.log('FormContent componentWillReceiveProps nextProps.table:',nextProps.table,this.state.table)
     if(nextProps.table !== '' && nextProps.table !== this.state.table) {
       const that = this
       $.ajax({
@@ -41,7 +43,7 @@ class Content extends Component {
               page: that.state.page
             },
             success(responseData) {
-              // console.log('getItem',responseData.data)
+              // console.log('getItem')
               responseData.data.forEach(item => {
                 item.key = item.id
               })
@@ -129,10 +131,9 @@ class Content extends Component {
               editingRow[item.dataIndex] = null
             }
           })
-          // console.log('editingRow', editingRow)
+          console.log('editingRow', editingRow)
           if(responseData.data.length === 10) {
             // 最后一页数据已到达10条
-            // console.log('another page')
             responseData.data = []
             responseData.data.push(editingRow)
             that.setState({
@@ -375,7 +376,14 @@ class Content extends Component {
   }
 
   render() {
-    // console.log('render','this.state.data',this.state)
+    // console.log('FormContent render','this.state.table',this.state.table)
+    const notNullColumns = []
+    this.state.columns.forEach(item => {
+      if(item.notNull) {
+        notNullColumns.push(item.dataIndex)
+      }
+    })
+    // console.log('notNullColumns',notNullColumns)
     const columns = this.state.columns.map((col) => {
       if (!col.editable) {
         return col
@@ -387,6 +395,7 @@ class Content extends Component {
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
+          notNullColumns: notNullColumns,
         }),
       }
     })
@@ -470,9 +479,9 @@ class Content extends Component {
             <Button className="addButton" type="primary" icon="delete">一键删除</Button>
            </Popconfirm>
           : null}
+          {this.state.table !== '' && this.state.table !== 'teacher_tbl' && this.state.table !== 'course_tbl' ? <RulesTable table={this.state.table}></RulesTable>: null}
         </EditableContext.Provider>
       </div>
-
     )
   }
 }

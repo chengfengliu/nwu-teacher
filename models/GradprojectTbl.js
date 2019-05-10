@@ -65,7 +65,7 @@
     },
     {
         title: '指导老师工号',
-        dataIndex: 'teacher_id',
+        dataIndex: 'job_id',
         editable: true,
         notNull: false,
         type: 'int',
@@ -79,7 +79,7 @@
         type: 'char',
         templateIndex: 9,
         sourceTable: 'teacher_tbl',
-        primaryKey: 'teacher_id',
+        primaryKey: 'job_id',
         foreignKey: 'job_id',
     },
     {

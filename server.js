@@ -34,6 +34,7 @@ if(process.env.NODE_ENV === 'development') {
 // 连接MySQL数据库
 const connection = mysql.createConnection(mysqlConfig)
 
+// 路由
 app.use(router.routes()).use(router.allowedMethods())
 
 connection.connect(

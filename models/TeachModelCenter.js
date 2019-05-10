@@ -23,12 +23,12 @@ module.exports.columns = [
     type: 'char',
     templateIndex: 2,
     sourceTable: 'teacher_tbl',
-    primaryKey: 'director_job_id',
+    primaryKey: 'job_id',
     foreignKey: 'job_id',
   },
   {
     title: '负责人工号',
-    dataIndex: 'director_job_id',
+    dataIndex: 'job_id',
     editable: true,
     notNull: true,
     type: 'int',
@@ -51,3 +51,15 @@ module.exports.columns = [
     templateIndex: 5,
   }, 
 ]
+
+module.exports.rules = {
+  tableType: '教学中心',
+  itemColumnName: 'center_name',
+  ruleColumnName: 'center_level',
+  columns: [
+    {title: "级别", dataIndex: "center_level", editable: true},
+    {title: "工作量", dataIndex: "workload", editable: true},
+    {title: "绩效", dataIndex: "performance_score", editable: true},
+    {title: "奖金", dataIndex: "bonus", editable: true},
+  ]
+}
